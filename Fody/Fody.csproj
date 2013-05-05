@@ -72,6 +72,7 @@
     <Reference Include="System.Xml.Linq" />
     <None Include="FodyWeavers.xml" />
     <Compile Include="CecilExtensions.cs" />
+    <Compile Include="HelperClassInjector.cs" />
     <Compile Include="MethodProcessor.cs" />
     <Compile Include="MockAssemblyResolver.cs" />
     <Compile Include="ModuleWeaver.cs" />

@@ -1,15 +1,19 @@
 ﻿using System.Reflection;
-using Resourcer;
 
 public class TemplateClass
 {
-    public void Foo()
+    public void AsStreamAfter()
     {
         var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Foo");
     }
 
-    public void Bar()
+    public void AsStreamBefore()
     {
         var stream = Resource.AsStream("Foo");
+    }
+
+    public void AsStringBefore()
+    {
+        var @string = Resource.AsString("Foo");
     }
 }

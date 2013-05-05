@@ -59,6 +59,15 @@ public class ModuleWeaverTests
             Assert.IsNotNull(stream);
         }
     }
+    [Test]
+    public void AsStreamUnChecked()
+    {
+        var instance = GetInstance("TargetClass");
+        using (var stream = (Stream)instance.WithAsStreamUnChecked())
+        {
+            Assert.Null(stream);
+        }
+    }
 
     public dynamic GetInstance(string className)
     {

@@ -21,6 +21,8 @@ public partial class ModuleWeaver
             throw new WeavingException("Requires version 1.13.8 (or higher) of Fody.");
         }
         FindCoreReferences();
+
+        InjectHelper();
         foreach (var type in ModuleDefinition
             .GetTypes()
             .Where(x => x.IsClass()))

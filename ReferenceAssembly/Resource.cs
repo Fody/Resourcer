@@ -24,13 +24,5 @@ namespace Resourcer
         {
             throw new NotImplementedException();
         }
-        public static byte[] AsBytes(string path)
-        {
-            throw new NotImplementedException();
-        }
-        public static byte[] AsBytesUnChecked(string path)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

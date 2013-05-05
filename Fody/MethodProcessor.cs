@@ -12,7 +12,6 @@ public class MethodProcessor
     public Action<string> LogError;
     bool foundUsageInMethod;
     ILProcessor ilProcessor;
-
     public ModuleWeaver ModuleWeaver;
     string relativeCodeDirPath;
 
@@ -63,6 +62,14 @@ public class MethodProcessor
             var searchPath = FindSearchPath(stringInstruction);
             var resource = FindResource(searchPath);
             stringInstruction.Operand = resource.Name;
+            var getAssembly = Instruction.Create(OpCodes.Call, ModuleWeaver.GetExecutingAssemblyMethod);
+            ilProcessor.InsertBefore(stringInstruction, getAssembly);
+            instruction.Operand = ModuleWeaver.GetManifestResourceStreamMethod;
+            return;
+        }
+        if (methodReference.Name == "AsStreamUnChecked")
+        {
+            var stringInstruction = instruction.Previous;
             var getAssembly = Instruction.Create(OpCodes.Call, ModuleWeaver.GetExecutingAssemblyMethod);
             ilProcessor.InsertBefore(stringInstruction, getAssembly);
             instruction.Operand = ModuleWeaver.GetManifestResourceStreamMethod;
