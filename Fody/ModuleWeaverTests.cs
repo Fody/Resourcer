@@ -4,6 +4,7 @@ using System.Reflection;
 using Mono.Cecil;
 using Mono.Cecil.Pdb;
 using NUnit.Framework;
+
 [TestFixture]
 public class ModuleWeaverTests
 {
@@ -50,23 +51,75 @@ public class ModuleWeaverTests
         }
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
+
     [Test]
     public void AsStream()
     {
         var instance = GetInstance("TargetClass");
-        using (var stream = (Stream)instance.WithAsStream())
+        using (var stream = (Stream) instance.WithAsStream())
         {
             Assert.IsNotNull(stream);
+	        using (var streamReader = new StreamReader(stream))
+	        {
+		        Assert.AreEqual("contents", streamReader.ReadToEnd());
+	        }
         }
     }
+    [Test]
+    public void AsStreamCustomNamespace()
+    {
+		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+        using (var stream = (Stream) instance.WithAsStream())
+        {
+            Assert.IsNotNull(stream);
+	        using (var streamReader = new StreamReader(stream))
+	        {
+				Assert.AreEqual("contents in namespace", streamReader.ReadToEnd());
+	        }
+        }
+    }
+
     [Test]
     public void AsStreamUnChecked()
     {
         var instance = GetInstance("TargetClass");
-        using (var stream = (Stream)instance.WithAsStreamUnChecked())
+		using (var stream = (Stream)instance.WithAsStreamUnChecked("fakePath"))
         {
             Assert.Null(stream);
         }
+    }
+
+    [Test]
+    public void AsString()
+    {
+        var instance = GetInstance("TargetClass");
+	    var result = (string) instance.WithAsString();
+	    Assert.IsNotNull(result);
+		Assert.AreEqual("contents", result);
+    }
+
+    [Test]
+	public void AsStringCustomNamespace()
+	{
+		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+	    var result = (string) instance.WithAsString();
+	    Assert.IsNotNull(result);
+		Assert.AreEqual("contents in namespace", result);
+    }
+
+    [Test]
+    public void AsStringUnCheckedGoodPath()
+    {
+        var instance = GetInstance("TargetClass");
+	    var result = (string)instance.WithAsStringUnChecked("AssemblyToProcess.EmbeddedResource.txt");
+	    Assert.AreEqual("contents", result);
+    }
+
+    [Test]
+    public void AsStringUnChecked()
+    {
+        var instance = GetInstance("TargetClass");
+		Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"), "Could not find a resource named 'fakePath'.");
     }
 
     public dynamic GetInstance(string className)
@@ -74,10 +127,10 @@ public class ModuleWeaverTests
         var type = assembly.GetType(className, true);
         return Activator.CreateInstance(type);
     }
+
     [Test]
     public void PeVerify()
     {
-        Verifier.Validate( afterAssemblyPath);
+        Verifier.Validate(afterAssemblyPath);
     }
 }
-

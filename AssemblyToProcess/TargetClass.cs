@@ -5,18 +5,18 @@ public class TargetClass
 {
     public Stream WithAsStream()
     {
-        return Resource.AsStream("PreEmbeddedResource.txt");
+        return Resource.AsStream("EmbeddedResource.txt");
     }
-    public Stream WithAsStreamUnChecked()
+    public Stream WithAsStreamUnChecked(string path)
     {
-        return Resource.AsStreamUnChecked("fakePath");
+		return Resource.AsStreamUnChecked(path);
     }
-    //public string WithAsString()
-    //{
-    //    return Resource.AsString("PreEmbeddedResource.txt");
-    //}
-    //public string WithAsStringUnChecked()
-    //{
-    //    return Resource.AsStringUnChecked("fakePath");
-    //}
+    public string WithAsString()
+    {
+        return Resource.AsString("EmbeddedResource.txt");
+    }
+	public string WithAsStringUnChecked(string path)
+    {
+        return Resource.AsStringUnChecked(path);
+    }
 }

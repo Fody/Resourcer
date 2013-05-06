@@ -45,15 +45,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Compile Include="CustomNamespace\TargetClass.cs" />
     <Compile Include="TargetClass.cs" />
     <ProjectReference Include="..\ReferenceAssembly\ReferenceAssembly.csproj">
       <Project>{6F416A34-2476-4A6B-B613-F9B46781C00D}</Project>
       <Name>ReferenceAssembly</Name>
     </ProjectReference>
-    <Content Include="Nested\PostEmbeddedResource.txt" />
-    <EmbeddedResource Include="Nested\PreEmbeddedResource.txt" />
-    <Content Include="PostEmbeddedResource.txt" />
-    <EmbeddedResource Include="PreEmbeddedResource.txt" />
+    <EmbeddedResource Include="CustomNamespace\EmbeddedResource.txt" />
+    <EmbeddedResource Include="EmbeddedResource.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿
+#pragma warning disable 168
+using System.Reflection;
 
 public class TemplateClass
 {
@@ -17,3 +19,4 @@ public class TemplateClass
         var @string = Resource.AsString("Foo");
     }
 }
+#pragma warning restore 168

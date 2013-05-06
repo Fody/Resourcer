@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
 internal static class Resource
@@ -18,7 +19,12 @@ internal static class Resource
         try
         {
             stream = assembly.GetManifestResourceStream(path);
-            streamReader = new StreamReader(stream);
+            if (stream == null)
+            {
+	            var message = string.Concat("Could not find a resource named '", path,"'.");
+	            throw new Exception(message);
+            }
+	        streamReader = new StreamReader(stream);
             value = streamReader.ReadToEnd();
         }
         finally
