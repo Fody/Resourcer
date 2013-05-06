@@ -1,21 +1,11 @@
-## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
+﻿
+// ReSharper disable UnusedMember.Local
+using System;
+using System.IO;
+using System.Reflection;
 
-Simplifies reading embedded resources from an Assembly.
-
-[Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
-
-Static resource names are checked at compile time. Use `Resource.AsString` and `Resource.AsStream`.
-
-Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`. 
-
-## Nuget package http://nuget.org/packages/Resourcer.Fody 
-
-## What it does 
-
-Assuming you have an embedded resource at the root of your assembly named `ResourceName` and your assembly is named `AssemblyName`.
-
-### Your Code
-
+namespace Before
+{
     class Sample
     {
         void ReadResourceAsString()
@@ -28,9 +18,10 @@ Assuming you have an embedded resource at the root of your assembly named `Resou
             var streamValue = Resource.AsStream("ResourceName");
         }
     }
+}
 
-### What gets compiled
-
+namespace After
+{
     class Sample
     {
         void ReadResourceAsString()
@@ -50,9 +41,7 @@ Assuming you have an embedded resource at the root of your assembly named `Resou
             var streamValue = assembly.GetManifestResourceStream("AssemblyName.ResourceName");
         }
     }
-    
-## 
+}
 
-## Icon
 
-<a href="http://thenounproject.com/noun/box/#icon-No11029" target="_blank">Box</a> designed by <a href="http://thenounproject.com/molumen" target="_blank">Mourad Mokrane</a> from The Noun Project
+// ReSharper restore UnusedMember.Local

@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Sample.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="TemplateClass.cs" />
   </ItemGroup>
