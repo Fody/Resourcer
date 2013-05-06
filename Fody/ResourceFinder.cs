@@ -38,6 +38,7 @@ public static class ResourceFinder
 			return resource;
 		}
 
-		throw new WeavingException(string.Format("Could not find a resource based on the search path '{0}'.", searchPath));
+        var message = string.Format("Could not find a resource.\r\nTried:\r\n'{1}'\r\n'{2}'\r\n'{3}'", searchPath, searchPath, resourceNameFromDir, resourceNameFromDir);
+	    throw new WeavingException(message);
 	}
 }

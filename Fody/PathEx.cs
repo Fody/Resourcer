@@ -5,6 +5,8 @@ public class PathEx
 {
     public static String MakeRelativePath(String fromPath, String toPath)
     {
+        fromPath = fromPath.TrimEnd(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+        toPath = toPath.TrimEnd(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         var fromUri = new Uri(fromPath);
         var toUri = new Uri(toPath);
 
