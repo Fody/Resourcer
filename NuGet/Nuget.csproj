@@ -30,8 +30,8 @@
   <UsingTask TaskName="PepitaPackage.WeavingTask" AssemblyFile="$(SolutionDir)Tools\Pepita\PepitaPackage.dll" />
   <Target Name="NuGetBuild" DependsOnTargets="Clean">
     <MakeDir Directories="$(SolutionDir)NuGetBuild" />
-    <Copy SourceFiles="$(SolutionDir)ReferenceAssembly\bin\$(ConfigurationName)\Resourcer.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp7+win8" />
-    <Copy SourceFiles="$(SolutionDir)ReferenceAssembly\bin\$(ConfigurationName)\Resourcer.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp7+win8" />
+    <Copy SourceFiles="$(SolutionDir)ReferenceAssembly\bin\$(ConfigurationName)\Resourcer.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40" />
+    <Copy SourceFiles="$(SolutionDir)ReferenceAssembly\bin\$(ConfigurationName)\Resourcer.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40" />
     <Copy SourceFiles="$(SolutionDir)NuGet\Resourcer.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(SolutionDir)Fody\bin\$(ConfigurationName)\Resourcer.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(SolutionDir)Fody\bin\$(ConfigurationName)\Resourcer.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
