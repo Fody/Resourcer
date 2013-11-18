@@ -8,13 +8,12 @@ using NUnit.Framework;
 [TestFixture]
 public class ModuleWeaverTests
 {
-    string beforeAssemblyPath;
     string afterAssemblyPath;
     Assembly assembly;
 
     public ModuleWeaverTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
+        var beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
 #if (!DEBUG)
         beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
 #endif
@@ -65,19 +64,6 @@ public class ModuleWeaverTests
 	        }
         }
     }
-    [Test]
-    public void AsStreamCustomNamespace()
-    {
-		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
-        using (var stream = (Stream) instance.WithAsStream())
-        {
-            Assert.IsNotNull(stream);
-	        using (var streamReader = new StreamReader(stream))
-	        {
-				Assert.AreEqual("contents in namespace", streamReader.ReadToEnd());
-	        }
-        }
-    }
 
     [Test]
     public void AsStreamUnChecked()
@@ -99,6 +85,15 @@ public class ModuleWeaverTests
     }
 
     [Test]
+    public void FullyQualified()
+    {
+        var instance = GetInstance("TargetClass");
+        var result = (string)instance.FullyQualified();
+	    Assert.IsNotNull(result);
+		Assert.AreEqual("contents", result);
+    }
+
+    [Test]
 	public void AsStringCustomNamespace()
 	{
 		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
@@ -108,10 +103,38 @@ public class ModuleWeaverTests
     }
 
     [Test]
+    public void FullyQualifiedCustomNamespace()
+	{
+		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+        var result = (string)instance.FullyQualified();
+	    Assert.IsNotNull(result);
+		Assert.AreEqual("contents in namespace", result);
+    }
+
+
+    [Test]
+    public void FullyQualifiedMisMatchNamespace()
+	{
+        var instance = GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
+        var result = (string)instance.FullyQualified();
+	    Assert.IsNotNull(result);
+        Assert.AreEqual("contents in mismatch namespace", result);
+    }
+
+    [Test]
+	public void MisMatchNamespace()
+	{
+        var instance = GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
+	    var result = (string) instance.WithAsString();
+	    Assert.IsNotNull(result);
+        Assert.AreEqual("contents in mismatch namespace", result);
+    }
+
+    [Test]
     public void AsStringUnCheckedGoodPath()
     {
         var instance = GetInstance("TargetClass");
-	    var result = (string)instance.WithAsStringUnChecked("AssemblyToProcess.EmbeddedResource.txt");
+        var result = (string)instance.WithAsStringUnChecked("AssemblyToProcess.Resource.txt");
 	    Assert.AreEqual("contents", result);
     }
 
@@ -122,7 +145,7 @@ public class ModuleWeaverTests
 		Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"), "Could not find a resource named 'fakePath'.");
     }
 
-    public dynamic GetInstance(string className)
+    dynamic GetInstance(string className)
     {
         var type = assembly.GetType(className, true);
         return Activator.CreateInstance(type);
@@ -131,6 +154,6 @@ public class ModuleWeaverTests
     [Test]
     public void PeVerify()
     {
-        Verifier.Validate(afterAssemblyPath);
+        Verifier.Verify(afterAssemblyPath);
     }
 }

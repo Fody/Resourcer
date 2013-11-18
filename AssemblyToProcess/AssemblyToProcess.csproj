@@ -45,14 +45,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Compile Include="MisMatchNamespace\TargetClass.cs" />
     <Compile Include="CustomNamespace\TargetClass.cs" />
     <Compile Include="TargetClass.cs" />
     <ProjectReference Include="..\ReferenceAssembly\ReferenceAssembly.csproj">
       <Project>{6F416A34-2476-4A6B-B613-F9B46781C00D}</Project>
       <Name>ReferenceAssembly</Name>
     </ProjectReference>
-    <EmbeddedResource Include="CustomNamespace\EmbeddedResource.txt" />
-    <EmbeddedResource Include="EmbeddedResource.txt" />
+    <EmbeddedResource Include="CustomNamespace\ResourceInCustomNamespace.txt" />
+    <EmbeddedResource Include="Resource.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MisMatchNamespace\ResourceInMisMatchNamespace.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

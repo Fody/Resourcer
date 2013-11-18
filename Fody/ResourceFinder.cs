@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Mono.Cecil;
 
@@ -38,7 +37,7 @@ public static class ResourceFinder
 			return resource;
 		}
 
-        var message = string.Format("Could not find a resource.\r\nTried:\r\n'{1}'\r\n'{2}'\r\n'{3}'", searchPath, searchPath, resourceNameFromDir, resourceNameFromDir);
+        var message = string.Format("Could not find a resource.\r\nTried:\r\n'{0}'\r\n'{1}'\r\n'{2}'", searchPath, resourceNameFromDir, resourceNameFromDir);
 	    throw new WeavingException(message);
 	}
 }

@@ -1,6 +1,5 @@
 ﻿
 // ReSharper disable UnusedMember.Local
-using System;
 using System.IO;
 using System.Reflection;
 

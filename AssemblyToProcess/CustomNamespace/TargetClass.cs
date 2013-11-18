@@ -1,17 +1,16 @@
-﻿using System.IO;
-using Resourcer;
+﻿using Resourcer;
 
 namespace AssemblyToProcess.CustomNamespace
 {
 	public class TargetClass
 	{
-		public Stream WithAsStream()
-		{
-			return Resource.AsStream("EmbeddedResource.txt");
-		}
+        public string FullyQualified()
+        {
+            return Resource.AsString("AssemblyToProcess.CustomNamespace.ResourceInCustomNamespace.txt");
+        }
 		public string WithAsString()
 		{
-			return Resource.AsString("EmbeddedResource.txt");
+            return Resource.AsString("ResourceInCustomNamespace.txt");
 		}
 	}
 }
