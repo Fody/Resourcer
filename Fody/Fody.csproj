@@ -47,7 +47,9 @@
     <None Include="NugetAssets\install.ps1" />
     <None Include="NugetAssets\Resourcer.nuspec" />
     <None Include="NugetAssets\uninstall.ps1" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
