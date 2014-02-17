@@ -10,7 +10,11 @@ Static resource names are checked at compile time. Use `Resource.AsString` and `
 
 Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`. 
 
-## Nuget package http://nuget.org/packages/Resourcer.Fody 
+## Nuget package 
+
+http://nuget.org/packages/Resourcer.Fody 
+ 
+    PM> Install-Package Resourcer.Fody
 
 ## What it does 
 
