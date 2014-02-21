@@ -16,10 +16,6 @@ public partial class ModuleWeaver
 
     public void Execute()
     {
-        if (string.IsNullOrEmpty(ProjectDirectoryPath))
-        {
-            throw new WeavingException("Requires version 1.13.8 (or higher) of Fody.");
-        }
         FindCoreReferences();
 
         InjectHelper();

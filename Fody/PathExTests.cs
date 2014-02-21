@@ -3,18 +3,28 @@ using NUnit.Framework;
 [TestFixture]
 public class PathExTests
 {
+
     [Test]
     public void NoTrailingSlash()
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart");
         Assert.AreEqual("RelativePart", relativePath);
     }
+
+    [Test]
+    public void SourceIncludedFromSharedLink()
+    {
+        var relativePath = PathEx.MakeRelativePath(@"C:\Code\Solution\Project", @"C:\Code\Solution\Common");
+        Assert.AreEqual("", relativePath);
+    }
+
     [Test]
     public void TrailingSlash()
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess\RelativePart\");
         Assert.AreEqual("RelativePart", relativePath);
     }
+
     [Test]
     public void Same()
     {
@@ -24,8 +34,8 @@ public class PathExTests
         Assert.AreEqual(@"\", relativePath2);
         var relativePath3 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"C:\Code\Resourcer\AssemblyToProcess\");
         Assert.AreEqual(@"\", relativePath3);
-
     }
+
     [Test]
     public void MixedSlash()
     {

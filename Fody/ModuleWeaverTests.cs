@@ -103,6 +103,15 @@ public class ModuleWeaverTests
     }
 
     [Test]
+    public void AsStringInLinkProject()
+	{
+        var instance = GetInstance("TargetClassInLinkProject");
+	    var result = (string) instance.WithAsString();
+	    Assert.IsNotNull(result);
+        Assert.AreEqual("content in link project", result);
+    }
+
+    [Test]
     public void FullyQualifiedCustomNamespace()
 	{
 		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
