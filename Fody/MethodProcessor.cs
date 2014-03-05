@@ -7,7 +7,6 @@ using Mono.Cecil.Cil;
 public class MethodProcessor
 {
 	public MethodDefinition Method;
-	public Action<string> LogInfo;
 	public Action<string> LogError;
 	public ModuleWeaver ModuleWeaver;
 	string relativeCodeDirPath;
@@ -62,10 +61,8 @@ public class MethodProcessor
 
 		if (methodReference.Name == "AsStream")
 		{
-			var stringInstruction = instruction.Previous;
-			var searchPath = FindSearchPath(stringInstruction);
-			var resource = FindResource(searchPath);
-			stringInstruction.Operand = resource.Name;
+			var resource = FindResource(instruction);
+		    instruction.Previous.Operand = resource.Name;
 			instruction.Operand = ModuleWeaver.AsStreamMethod;
 			return;
 		}
@@ -75,11 +72,9 @@ public class MethodProcessor
 			return;
 		}
 		if (methodReference.Name == "AsString")
-		{
-			var stringInstruction = instruction.Previous;
-			var searchPath = FindSearchPath(stringInstruction);
-			var resource = FindResource(searchPath);
-			stringInstruction.Operand = resource.Name;
+        {
+            var resource = FindResource(instruction);
+            instruction.Previous.Operand = resource.Name;
 			instruction.Operand = ModuleWeaver.AsStringMethod;
 			return;
 		}
@@ -91,19 +86,15 @@ public class MethodProcessor
 		throw new WeavingException(string.Format("Unsupported method '{0}'.", methodReference.FullName));
 	}
 
-
-	string FindSearchPath(Instruction instruction)
-	{
-		if (instruction.OpCode != OpCodes.Ldstr)
-		{
-			//TODO:
-			throw new WeavingException("Can only be used on string literals");
-		}
-		return (string) instruction.Operand;
-	}
-
-	Resource FindResource(string searchPath)
-	{
-		return ModuleWeaver.ModuleDefinition.FindResource(searchPath, Method.DeclaringType.GetNamespace(), relativeCodeDirPath);
-	}
+    Resource FindResource(Instruction instruction)
+    {
+        var stringInstruction = instruction.Previous;
+        if (stringInstruction.OpCode != OpCodes.Ldstr)
+        {
+            //TODO:
+            throw new WeavingException("Can only be used on string literals");
+        }
+        var searchPath = (string) stringInstruction.Operand;
+        return ModuleWeaver.ModuleDefinition.FindResource(searchPath, Method.DeclaringType.GetNamespace(), relativeCodeDirPath, stringInstruction);
+    }
 }

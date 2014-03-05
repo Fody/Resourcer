@@ -12,7 +12,7 @@ public class ResourceFinderTests
 		var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream)null);
 		var definition = ModuleDefinition.CreateModule("AssemblyName", ModuleKind.Dll);
 		definition.Resources.Add(expected);
-		var actual = definition.FindResource("AssemblyName.Namespace1.ResourceName", null, null);
+		var actual = definition.FindResource("AssemblyName.Namespace1.ResourceName", null, null, null);
 		Assert.AreEqual(expected,actual);
 	}
 	[Test]
@@ -21,7 +21,7 @@ public class ResourceFinderTests
 		var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream)null);
 		var definition = ModuleDefinition.CreateModule("AssemblyName", ModuleKind.Dll);
 		definition.Resources.Add(expected);
-		var actual = definition.FindResource("ResourceName", "AssemblyName.Namespace1", null);
+		var actual = definition.FindResource("ResourceName", "AssemblyName.Namespace1", null, null);
 		Assert.AreEqual(expected,actual);
 	}
 	[Test]
@@ -30,7 +30,7 @@ public class ResourceFinderTests
 		var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream)null);
 		var definition = ModuleDefinition.CreateModule("AssemblyName", ModuleKind.Dll);
 		definition.Resources.Add(expected);
-		var actual = definition.FindResource("ResourceName", "BadPrefix", @"Namespace1");
+        var actual = definition.FindResource("ResourceName", "BadPrefix", @"Namespace1", null);
 		Assert.AreEqual(expected,actual);
 	}
 	[Test]
@@ -39,7 +39,7 @@ public class ResourceFinderTests
 		var expected = new EmbeddedResource("AssemblyName.ResourceName", ManifestResourceAttributes.Public, (Stream)null);
 		var definition = ModuleDefinition.CreateModule("AssemblyName", ModuleKind.Dll);
 		definition.Resources.Add(expected);
-		var actual = definition.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1");
+        var actual = definition.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1", null);
 		Assert.AreEqual(expected,actual);
 	}
 	[Test]
@@ -48,7 +48,7 @@ public class ResourceFinderTests
 		var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream)null);
 		var definition = ModuleDefinition.CreateModule("AssemblyName", ModuleKind.Dll);
 		definition.Resources.Add(expected);
-		var actual = definition.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1\Namespace2");
+        var actual = definition.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null);
 		Assert.AreEqual(expected,actual);
 	}
 	[Test]
@@ -57,7 +57,7 @@ public class ResourceFinderTests
 		var expected = new EmbeddedResource("AssemblyName.ResourceName", ManifestResourceAttributes.Public, (Stream)null);
 		var definition = ModuleDefinition.CreateModule("AssemblyName", ModuleKind.Dll);
 		definition.Resources.Add(expected);
-		var actual = definition.FindResource(@"..\..\ResourceName", "BadPrefix", @"Namespace1\Namespace2");
+        var actual = definition.FindResource(@"..\..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null);
 		Assert.AreEqual(expected,actual);
 	}
 }

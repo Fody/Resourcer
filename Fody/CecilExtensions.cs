@@ -1,4 +1,5 @@
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 public static class CecilExtensions
 {
@@ -7,7 +8,22 @@ public static class CecilExtensions
     {
         return (x.BaseType != null) && !x.IsEnum && !x.IsInterface;
     }
+    public static SequencePoint GetPreviousSequencePoint(this Instruction instruction)
+    {
+        while (true)
+        {
+            if (instruction.SequencePoint != null)
+            {
+                return instruction.SequencePoint;
+            }
 
+            instruction = instruction.Previous;
+            if (instruction == null)
+            {
+                return null;
+            }
+        }
+    }
     public static MethodDefinition Find(this TypeDefinition typeReference, string name, params string[] paramTypes)
     {
         foreach (var method in typeReference.Methods)

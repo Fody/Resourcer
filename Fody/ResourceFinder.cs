@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using System.Linq;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 public static class ResourceFinder
 {
 
-	public static Resource FindResource(this ModuleDefinition moduleDefinition, string searchPath, string @namespace, string codeDirPath)
+	public static Resource FindResource(this ModuleDefinition moduleDefinition, string searchPath, string @namespace, string codeDirPath, Instruction instruction)
 	{
 		var resources = moduleDefinition.Resources;
 
@@ -38,6 +39,9 @@ public static class ResourceFinder
 		}
 
         var message = string.Format("Could not find a resource.\r\nTried:\r\n'{0}'\r\n'{1}'\r\n'{2}'", searchPath, resourceNameFromDir, resourceNameFromDir);
-	    throw new WeavingException(message);
+	    throw new WeavingException(message)
+	    {
+            SequencePoint = instruction.GetPreviousSequencePoint()
+	    };
 	}
 }

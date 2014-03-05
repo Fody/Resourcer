@@ -35,7 +35,6 @@ public partial class ModuleWeaver
                     {
                         Method = method,
                         ModuleWeaver = this,
-                        LogInfo = LogInfo
                     };
                 methodProcessor.Process();
             }
