@@ -42,9 +42,7 @@ public partial class ModuleWeaver
 		}
 
         var message = string.Format("Could not find a resource.\r\nTried:\r\n'{0}'\r\n'{1}'\r\n'{2}'", searchPath, resourceNameFromDir, resourceNameFromDir);
-	    throw new WeavingException(message)
-	    {
-            SequencePoint = instruction.GetPreviousSequencePoint()
-	    };
+	    LogErrorPoint(message, instruction.GetPreviousSequencePoint());
+	    return null;
 	}
 }
