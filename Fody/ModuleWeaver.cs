@@ -31,12 +31,7 @@ public partial class ModuleWeaver
                 {
                     continue;
                 }
-                var methodProcessor = new MethodProcessor
-                    {
-                        Method = method,
-                        ModuleWeaver = this,
-                    };
-                methodProcessor.Process();
+                Process(method);
             }
         }
         CleanReferences();

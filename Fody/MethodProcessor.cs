@@ -4,24 +4,20 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public class MethodProcessor
+public partial class ModuleWeaver
 {
-	public MethodDefinition Method;
-	public Action<string> LogError;
-	public ModuleWeaver ModuleWeaver;
-	string relativeCodeDirPath;
 
-	public void Process()
+    public void Process(MethodDefinition method)
 	{
-		FindRelativePath();
+        var relativePath = FindRelativePath(method);
 
-		try
+        try
 		{
-			var instructions = Method.Body.Instructions.Where(x => x.OpCode == OpCodes.Call).ToList();
+			var instructions = method.Body.Instructions.Where(x => x.OpCode == OpCodes.Call).ToList();
 
 			foreach (var instruction in instructions)
 			{
-				ProcessInstruction(instruction);
+                ProcessInstruction(method, instruction, relativePath);
 			}
 		}
 		catch (Exception exception)
@@ -30,24 +26,21 @@ public class MethodProcessor
 			{
 				throw;
 			}
-			throw new Exception(string.Format("Failed to process '{0}'.", Method.FullName), exception);
+			throw new Exception(string.Format("Failed to process '{0}'.", method.FullName), exception);
 		}
 	}
 
-	void FindRelativePath()
-	{
-		foreach (var instruction1 in Method.Body.Instructions)
-		{
-			if (instruction1.SequencePoint != null)
-			{
-				var directoryName = Path.GetDirectoryName(instruction1.SequencePoint.Document.Url);
-				relativeCodeDirPath = PathEx.MakeRelativePath(ModuleWeaver.ProjectDirectoryPath, directoryName);
-				break;
-			}
-		}
-	}
+    string FindRelativePath(MethodDefinition method)
+    {
+        return (from instruction in method.Body.Instructions 
+                where instruction.SequencePoint != null 
+                select Path.GetDirectoryName(instruction.SequencePoint.Document.Url) 
+                into directoryName 
+                select PathEx.MakeRelativePath(ProjectDirectoryPath, directoryName))
+            .FirstOrDefault();
+    }
 
-	void ProcessInstruction(Instruction instruction)
+    void ProcessInstruction(MethodDefinition method, Instruction instruction, string relativePath)
 	{
 		var methodReference = instruction.Operand as MemberReference;
 		if (methodReference == null)
@@ -61,32 +54,32 @@ public class MethodProcessor
 
 		if (methodReference.Name == "AsStream")
 		{
-			var resource = FindResource(instruction);
+            var resource = FindResource(method, instruction, relativePath);
 		    instruction.Previous.Operand = resource.Name;
-			instruction.Operand = ModuleWeaver.AsStreamMethod;
+			instruction.Operand = AsStreamMethod;
 			return;
 		}
 		if (methodReference.Name == "AsStreamUnChecked")
 		{
-			instruction.Operand = ModuleWeaver.AsStreamMethod;
+			instruction.Operand = AsStreamMethod;
 			return;
 		}
 		if (methodReference.Name == "AsString")
         {
-            var resource = FindResource(instruction);
+            var resource = FindResource(method, instruction, relativePath);
             instruction.Previous.Operand = resource.Name;
-			instruction.Operand = ModuleWeaver.AsStringMethod;
+			instruction.Operand = AsStringMethod;
 			return;
 		}
 		if (methodReference.Name == "AsStringUnChecked")
 		{
-			instruction.Operand = ModuleWeaver.AsStringMethod;
+			instruction.Operand = AsStringMethod;
 			return;
 		}
 		throw new WeavingException(string.Format("Unsupported method '{0}'.", methodReference.FullName));
 	}
 
-    Resource FindResource(Instruction instruction)
+    Resource FindResource(MethodDefinition method, Instruction instruction, string relativePath)
     {
         var stringInstruction = instruction.Previous;
         if (stringInstruction.OpCode != OpCodes.Ldstr)
@@ -95,6 +88,6 @@ public class MethodProcessor
             throw new WeavingException("Can only be used on string literals");
         }
         var searchPath = (string) stringInstruction.Operand;
-        return ModuleWeaver.ModuleDefinition.FindResource(searchPath, Method.DeclaringType.GetNamespace(), relativeCodeDirPath, stringInstruction);
+        return FindResource(searchPath, method.DeclaringType.GetNamespace(), relativePath, stringInstruction);
     }
 }

@@ -3,12 +3,12 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-public static class ResourceFinder
+public partial class ModuleWeaver
 {
 
-	public static Resource FindResource(this ModuleDefinition moduleDefinition, string searchPath, string @namespace, string codeDirPath, Instruction instruction)
+	public Resource FindResource(string searchPath, string @namespace, string codeDirPath, Instruction instruction)
 	{
-		var resources = moduleDefinition.Resources;
+		var resources = ModuleDefinition.Resources;
 
 		//Fully qualified
 		var resource = resources.FirstOrDefault(x => x.Name == searchPath);
@@ -28,10 +28,13 @@ public static class ResourceFinder
 
 		//Relative based on dir
 		var fakeDrive = @"C:\";
-		var dirCombine =  Path.GetFullPath(Path.Combine(fakeDrive, codeDirPath, searchPath)).Replace(fakeDrive,string.Empty);
+		var dirCombine =  Path.GetFullPath(Path.Combine(fakeDrive, codeDirPath, searchPath))
+            .Replace(fakeDrive,string.Empty);
 
-		var suffix = dirCombine.Replace(@"\", ".").Replace(@"\", ".");
-		var resourceNameFromDir = Path.GetFileNameWithoutExtension(moduleDefinition.Name) + "." + suffix;
+		var suffix = dirCombine
+            .Replace(@"\", ".")
+            .Replace(@"\", ".");
+        var resourceNameFromDir = Path.GetFileNameWithoutExtension(ModuleDefinition.Name) + "." + suffix;
 		resource = resources.FirstOrDefault(x => x.Name == resourceNameFromDir);
 		if (resource != null)
 		{
