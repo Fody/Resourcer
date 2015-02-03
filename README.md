@@ -10,12 +10,12 @@ Static resource names are checked at compile time. Use `Resource.AsString` and `
 
 Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`. 
 
-## Nuget package 
+## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/Resourcer.Fody.svg?style=flat)](https://www.nuget.org/packages/Resourcer.Fody/)
 
-http://nuget.org/packages/Resourcer.Fody 
- 
+https://nuget.org/packages/Resourcer.Fody/
+
     PM> Install-Package Resourcer.Fody
-
+    
 ## What it does 
 
 Assuming you have an embedded resource at the root of your assembly named `ResourceName` and your assembly is named `AssemblyName`.
