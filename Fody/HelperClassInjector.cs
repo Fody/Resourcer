@@ -15,7 +15,7 @@ public partial class ModuleWeaver
     void InjectHelper()
     {
         var typeAttributes = TypeAttributes.AnsiClass | TypeAttributes.Sealed  | TypeAttributes.Abstract | TypeAttributes.AutoClass;
-        var targetType = new TypeDefinition("Resourcer", "ResourceHelper", typeAttributes, ModuleDefinition.TypeSystem.Object);
+        var targetType = new TypeDefinition(ModuleDefinition.Name+".Resourcer", "ResourceHelper", typeAttributes, ModuleDefinition.TypeSystem.Object);
         ModuleDefinition.Types.Add(targetType);
         var fieldDefinition = new FieldDefinition("assembly", FieldAttributes.Static | FieldAttributes.Private, AssemblyTypeReference)
             {
