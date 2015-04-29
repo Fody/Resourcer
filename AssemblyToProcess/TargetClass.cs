@@ -11,6 +11,14 @@ public class TargetClass
     {
 		return Resource.AsStreamUnChecked(path);
     }
+    public StreamReader WithAsStreamReader()
+    {
+        return Resource.AsStreamReader("Resource.txt");
+    }
+    public StreamReader WithAsStreamReaderUnChecked(string path)
+    {
+        return Resource.AsStreamReaderUnChecked(path);
+    }
     public string WithAsString()
     {
         return Resource.AsString("Resource.txt");

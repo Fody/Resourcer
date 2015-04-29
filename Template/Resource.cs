@@ -45,4 +45,14 @@ internal static class Resource
     {
         return assembly.GetManifestResourceStream(path);
     }
+
+    public static StreamWriter AsStreamReader(string path)
+    {
+        var stream = assembly.GetManifestResourceStream(path);
+        if (stream == null)
+        {
+            return null;
+        }
+        return new StreamWriter(stream);
+    }
 }

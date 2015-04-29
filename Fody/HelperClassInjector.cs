@@ -1,11 +1,13 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
+using Mono.Collections.Generic;
 
 public partial class ModuleWeaver
 {
     public MethodDefinition AsStringMethod;
     public MethodDefinition AsStreamMethod;
+    public MethodDefinition AsStreamReaderMethod;
 
     MethodAttributes staticMethodAttributes =
         MethodAttributes.Public |
@@ -14,17 +16,18 @@ public partial class ModuleWeaver
 
     void InjectHelper()
     {
-        var typeAttributes = TypeAttributes.AnsiClass | TypeAttributes.Sealed  | TypeAttributes.Abstract | TypeAttributes.AutoClass;
-        var targetType = new TypeDefinition(ModuleDefinition.Name+".Resourcer", "ResourceHelper", typeAttributes, ModuleDefinition.TypeSystem.Object);
+        var typeAttributes = TypeAttributes.AnsiClass | TypeAttributes.Sealed | TypeAttributes.Abstract | TypeAttributes.AutoClass;
+        var targetType = new TypeDefinition(ModuleDefinition.Name + ".Resourcer", "ResourceHelper", typeAttributes, ModuleDefinition.TypeSystem.Object);
         ModuleDefinition.Types.Add(targetType);
         var fieldDefinition = new FieldDefinition("assembly", FieldAttributes.Static | FieldAttributes.Private, AssemblyTypeReference)
-            {
-                DeclaringType = targetType
-            };
+                              {
+                                  DeclaringType = targetType
+                              };
         targetType.Fields.Add(fieldDefinition);
         InjectConstructor(targetType, fieldDefinition);
 
         InjectAsStream(targetType, fieldDefinition);
+        InjectAsStreamReader(targetType, fieldDefinition);
         InjectAsString(targetType, fieldDefinition);
     }
 
@@ -36,10 +39,40 @@ public partial class ModuleWeaver
         AsStreamMethod.Body.InitLocals = true;
         var inst = AsStreamMethod.Body.Instructions;
         inst.Add(Instruction.Create(OpCodes.Ldsfld, fieldDefinition));
-        inst.Add(Instruction.Create(OpCodes.Ldarg,pathParam));
+        inst.Add(Instruction.Create(OpCodes.Ldarg, pathParam));
         inst.Add(Instruction.Create(OpCodes.Callvirt, GetManifestResourceStreamMethod));
         inst.Add(Instruction.Create(OpCodes.Ret));
         targetType.Methods.Add(AsStreamMethod);
+    }
+
+    void InjectAsStreamReader(TypeDefinition targetType, FieldDefinition fieldDefinition)
+    {
+        AsStreamReaderMethod = new MethodDefinition("AsStreamReader", staticMethodAttributes, StreamReaderTypeReference);
+        var streamVariable = new VariableDefinition(StreamTypeReference);
+        AsStreamReaderMethod.Body.Variables.Add(streamVariable);
+        var pathParam = new ParameterDefinition(ModuleDefinition.TypeSystem.String);
+        AsStreamReaderMethod.Parameters.Add(pathParam);
+        AsStreamReaderMethod.Body.InitLocals = true;
+        var inst = AsStreamReaderMethod.Body.Instructions;
+
+        var skipReturn = Instruction.Create(OpCodes.Nop);
+
+        inst.Add(Instruction.Create(OpCodes.Ldsfld, fieldDefinition));
+        inst.Add(Instruction.Create(OpCodes.Ldarg, pathParam));
+        inst.Add(Instruction.Create(OpCodes.Callvirt, GetManifestResourceStreamMethod));
+
+        inst.Add(Instruction.Create(OpCodes.Stloc, streamVariable));
+        inst.Add(Instruction.Create(OpCodes.Ldloc, streamVariable));
+        inst.Add(Instruction.Create(OpCodes.Brtrue_S, skipReturn));
+
+        inst.Add(Instruction.Create(OpCodes.Ldnull));
+        inst.Add(Instruction.Create(OpCodes.Ret));
+        inst.Add(skipReturn);
+
+        inst.Add(Instruction.Create(OpCodes.Ldloc, streamVariable));
+        inst.Add(Instruction.Create(OpCodes.Newobj, StreamReaderConstructorReference));
+        inst.Add(Instruction.Create(OpCodes.Ret));
+        targetType.Methods.Add(AsStreamReaderMethod);
     }
 
 
@@ -59,14 +92,14 @@ public partial class ModuleWeaver
 
         var inst = AsStringMethod.Body.Instructions;
 
-		//24
-		var assignStreamBeforeReaderConstr = Instruction.Create(OpCodes.Ldloc, streamVar);
+        //24
+        var assignStreamBeforeReaderConstr = Instruction.Create(OpCodes.Ldloc, streamVar);
         //47
         var assignStringBeforeReturn = Instruction.Create(OpCodes.Ldloc, stringVar);
         //3d
         var assignStreamBeforeDispose = Instruction.Create(OpCodes.Ldloc, streamVar);
         //46
-		var endFinally = Instruction.Create(OpCodes.Endfinally);
+        var endFinally = Instruction.Create(OpCodes.Endfinally);
 
 
         inst.Add(Instruction.Create(OpCodes.Ldnull));
@@ -80,14 +113,14 @@ public partial class ModuleWeaver
         inst.Add(Instruction.Create(OpCodes.Stloc, streamVar));
         inst.Add(Instruction.Create(OpCodes.Ldloc, streamVar));
         inst.Add(Instruction.Create(OpCodes.Brtrue_S, assignStreamBeforeReaderConstr));
-        inst.Add(Instruction.Create(OpCodes.Ldstr,"Could not find a resource named '"));
-		inst.Add(Instruction.Create(OpCodes.Ldarg, pathParam));
-		inst.Add(Instruction.Create(OpCodes.Ldstr, "'."));
-        inst.Add(Instruction.Create(OpCodes.Call,ConcatReference));
-        inst.Add(Instruction.Create(OpCodes.Newobj,ExceptionConstructorReference));
+        inst.Add(Instruction.Create(OpCodes.Ldstr, "Could not find a resource named '"));
+        inst.Add(Instruction.Create(OpCodes.Ldarg, pathParam));
+        inst.Add(Instruction.Create(OpCodes.Ldstr, "'."));
+        inst.Add(Instruction.Create(OpCodes.Call, ConcatReference));
+        inst.Add(Instruction.Create(OpCodes.Newobj, ExceptionConstructorReference));
         inst.Add(Instruction.Create(OpCodes.Throw));
 
-	    inst.Add(assignStreamBeforeReaderConstr);
+        inst.Add(assignStreamBeforeReaderConstr);
         inst.Add(Instruction.Create(OpCodes.Newobj, StreamReaderConstructorReference));
         inst.Add(Instruction.Create(OpCodes.Stloc, readerVar));
         inst.Add(Instruction.Create(OpCodes.Ldloc, readerVar));
@@ -100,20 +133,20 @@ public partial class ModuleWeaver
         inst.Add(Instruction.Create(OpCodes.Ldloc, readerVar));
         inst.Add(Instruction.Create(OpCodes.Callvirt, DisposeTextReaderMethod));
         inst.Add(assignStreamBeforeDispose);
-        inst.Add(Instruction.Create(OpCodes.Brfalse_S,endFinally));
-        inst.Add(Instruction.Create(OpCodes.Ldloc,streamVar));
-        inst.Add(Instruction.Create(OpCodes.Callvirt,DisposeStreamMethod));
+        inst.Add(Instruction.Create(OpCodes.Brfalse_S, endFinally));
+        inst.Add(Instruction.Create(OpCodes.Ldloc, streamVar));
+        inst.Add(Instruction.Create(OpCodes.Callvirt, DisposeStreamMethod));
         inst.Add(endFinally);
         inst.Add(assignStringBeforeReturn);
         inst.Add(Instruction.Create(OpCodes.Ret));
 
         var finallyHandler = new ExceptionHandler(ExceptionHandlerType.Finally)
-            {
-                TryStart = assignAssemblyField,
-                TryEnd = assignReaderBeforeNullCheck,
-                HandlerStart = assignReaderBeforeNullCheck,
-                HandlerEnd = assignStringBeforeReturn
-            };
+                             {
+                                 TryStart = assignAssemblyField,
+                                 TryEnd = assignReaderBeforeNullCheck,
+                                 HandlerStart = assignReaderBeforeNullCheck,
+                                 HandlerEnd = assignStringBeforeReturn
+                             };
         AsStringMethod.Body.ExceptionHandlers.Add(finallyHandler);
         AsStringMethod.Body.SimplifyMacros();
         targetType.Methods.Add(AsStringMethod);

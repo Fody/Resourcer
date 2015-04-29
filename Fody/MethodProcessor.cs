@@ -68,6 +68,22 @@ public partial class ModuleWeaver
 			instruction.Operand = AsStreamMethod;
 			return;
 		}
+        if (methodReference.Name == "AsStreamReader")
+        {
+            var resource = FindResource(method, instruction, relativePath);
+            if (resource == null)
+            {
+                return;
+            }
+            instruction.Previous.Operand = resource.Name;
+            instruction.Operand = AsStreamReaderMethod;
+            return;
+        }
+        if (methodReference.Name == "AsStreamReaderUnChecked")
+		{
+			instruction.Operand = AsStreamReaderMethod;
+			return;
+		}
 		if (methodReference.Name == "AsString")
         {
             var resource = FindResource(method, instruction, relativePath);

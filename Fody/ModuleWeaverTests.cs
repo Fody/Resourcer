@@ -55,23 +55,45 @@ public class ModuleWeaverTests
     public void AsStream()
     {
         var instance = GetInstance("TargetClass");
-        using (var stream = (Stream) instance.WithAsStream())
+        using (var stream = (Stream)instance.WithAsStream())
         {
             Assert.IsNotNull(stream);
-	        using (var streamReader = new StreamReader(stream))
-	        {
-		        Assert.AreEqual("contents", streamReader.ReadToEnd());
-	        }
+            using (var streamReader = new StreamReader(stream))
+            {
+                Assert.AreEqual("contents", streamReader.ReadToEnd());
+            }
         }
     }
+
 
     [Test]
     public void AsStreamUnChecked()
     {
         var instance = GetInstance("TargetClass");
-		using (var stream = (Stream)instance.WithAsStreamUnChecked("fakePath"))
+        using (var stream = (Stream)instance.WithAsStreamUnChecked("fakePath"))
         {
             Assert.Null(stream);
+        }
+    }
+
+    [Test]
+    public void AsStreamReader()
+    {
+        var instance = GetInstance("TargetClass");
+        using (var streamReader = (StreamReader) instance.WithAsStreamReader())
+        {
+            Assert.IsNotNull(streamReader);
+            Assert.AreEqual("contents", streamReader.ReadToEnd());
+        }
+    }
+
+    [Test]
+    public void AsStreamReaderUnChecked()
+    {
+        var instance = GetInstance("TargetClass");
+        using (var streamReader = (StreamReader)instance.WithAsStreamReaderUnChecked("fakePath"))
+        {
+            Assert.Null(streamReader);
         }
     }
 
