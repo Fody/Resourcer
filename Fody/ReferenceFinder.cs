@@ -14,25 +14,25 @@ public partial class ModuleWeaver
         AppendTypes("System.Reflection", coreTypes);
 
         var textReaderTypeDefinition = coreTypes.First(x => x.Name == "TextReader");
-        ReadToEndMethod = ModuleDefinition.Import(textReaderTypeDefinition.Find("ReadToEnd"));
+        ReadToEndMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("ReadToEnd"));
 
         var exceptionTypeDefinition = coreTypes.First(x => x.Name == "Exception");
-		ExceptionConstructorReference = ModuleDefinition.Import(exceptionTypeDefinition.Find(".ctor", "String"));
+		ExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionTypeDefinition.Find(".ctor", "String"));
 
         var stringTypeDefinition = coreTypes.First(x => x.Name == "String");
-		ConcatReference = ModuleDefinition.Import(stringTypeDefinition.Find("Concat", "String", "String", "String"));
+        ConcatReference = ModuleDefinition.ImportReference(stringTypeDefinition.Find("Concat", "String", "String", "String"));
 
-        DisposeTextReaderMethod = ModuleDefinition.Import(textReaderTypeDefinition.Find("Dispose"));
+        DisposeTextReaderMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("Dispose"));
         var streamTypeDefinition = coreTypes.First(x => x.Name == "Stream");
-        DisposeStreamMethod = ModuleDefinition.Import(streamTypeDefinition.Find("Dispose"));
-        StreamTypeReference = ModuleDefinition.Import(streamTypeDefinition);
+        DisposeStreamMethod = ModuleDefinition.ImportReference(streamTypeDefinition.Find("Dispose"));
+        StreamTypeReference = ModuleDefinition.ImportReference(streamTypeDefinition);
         var streamReaderTypeDefinition = coreTypes.First(x => x.Name == "StreamReader");
-        StreamReaderTypeReference = ModuleDefinition.Import(streamReaderTypeDefinition);
-        StreamReaderConstructorReference = ModuleDefinition.Import(streamReaderTypeDefinition.Find(".ctor","Stream"));
+        StreamReaderTypeReference = ModuleDefinition.ImportReference(streamReaderTypeDefinition);
+        StreamReaderConstructorReference = ModuleDefinition.ImportReference(streamReaderTypeDefinition.Find(".ctor", "Stream"));
         var assemblyTypeDefinition = coreTypes.First(x => x.Name == "Assembly");
-        AssemblyTypeReference = ModuleDefinition.Import(assemblyTypeDefinition);
-        GetExecutingAssemblyMethod = ModuleDefinition.Import(assemblyTypeDefinition.Find("GetExecutingAssembly"));
-        GetManifestResourceStreamMethod = ModuleDefinition.Import(assemblyTypeDefinition.Find("GetManifestResourceStream", "String"));
+        AssemblyTypeReference = ModuleDefinition.ImportReference(assemblyTypeDefinition);
+        GetExecutingAssemblyMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetExecutingAssembly"));
+        GetManifestResourceStreamMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetManifestResourceStream", "String"));
     }
 
     void AppendTypes(string name, List<TypeDefinition> coreTypes)

@@ -15,7 +15,7 @@
     <language>en-AU</language>
     <tags>Embedded, Resource, ILWeaving, Fody, Cecil</tags>
     <dependencies>
-      <dependency id="Fody"  version="1.13.8" />
+      <dependency id="Fody" version="1.29.2" />
     </dependencies>
   </metadata>
 </package>
