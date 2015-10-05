@@ -122,7 +122,6 @@
     <Delete Files="@(FilesToDelete)" />
     <MakeDir Directories="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(SolutionDir)ReferenceAssembly\bin\$(ConfigurationName)\Resourcer.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net45+netcore45+wpa81+wp8" />
-    <Copy SourceFiles="$(SolutionDir)ReferenceAssembly\bin\$(ConfigurationName)\Resourcer.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net45+netcore45+wpa81+wp8" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\Resourcer.Fody.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(OutputPath)Resourcer.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(OutputPath)Resourcer.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
