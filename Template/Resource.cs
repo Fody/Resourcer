@@ -8,7 +8,7 @@ internal static class Resource
 
     static Resource()
     {
-        assembly = Assembly.GetExecutingAssembly();
+        assembly = typeof(Resource).GetTypeInfo().Assembly;
     }
 
     public static string AsString(string path)
@@ -29,14 +29,8 @@ internal static class Resource
         }
         finally
         {
-            if (streamReader != null)
-            {
-                streamReader.Dispose();
-            }
-            if (stream != null)
-            {
-                stream.Dispose();
-            }
+            streamReader?.Dispose();
+            stream?.Dispose();
         }
         return value;
     }

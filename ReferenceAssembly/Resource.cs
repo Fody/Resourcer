@@ -3,9 +3,6 @@ using System.IO;
 
 namespace Resourcer
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class Resource
     {
         public static string AsString(string path)

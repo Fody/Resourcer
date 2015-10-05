@@ -26,7 +26,7 @@ public partial class ModuleWeaver
 			{
 				throw;
 			}
-			throw new Exception(string.Format("Failed to process '{0}'.", method.FullName), exception);
+			throw new Exception($"Failed to process '{method.FullName}'.", exception);
 		}
 	}
 
@@ -100,7 +100,7 @@ public partial class ModuleWeaver
 			instruction.Operand = AsStringMethod;
 			return;
 		}
-		throw new WeavingException(string.Format("Unsupported method '{0}'.", methodReference.FullName));
+		throw new WeavingException($"Unsupported method '{methodReference.FullName}'.");
 	}
 
     Resource FindResource(MethodDefinition method, Instruction instruction, string relativePath)

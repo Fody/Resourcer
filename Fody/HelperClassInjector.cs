@@ -162,7 +162,10 @@ public partial class ModuleWeaver
         var staticConstructor = new MethodDefinition(".cctor", attributes, ModuleDefinition.TypeSystem.Void);
         targetType.Methods.Add(staticConstructor);
         var instructions = staticConstructor.Body.Instructions;
-        instructions.Add(Instruction.Create(OpCodes.Call, GetExecutingAssemblyMethod));
+        instructions.Add(Instruction.Create(OpCodes.Ldtoken, targetType));
+        instructions.Add(Instruction.Create(OpCodes.Call, GetTypeFromHandle));
+        instructions.Add(Instruction.Create(OpCodes.Call, GetTypeInfo));
+        instructions.Add(Instruction.Create(OpCodes.Callvirt, GetAssembly));
         instructions.Add(Instruction.Create(OpCodes.Stsfld, fieldDefinition));
         instructions.Add(Instruction.Create(OpCodes.Ret));
     }

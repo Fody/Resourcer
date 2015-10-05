@@ -31,9 +31,20 @@ public partial class ModuleWeaver
         StreamReaderConstructorReference = ModuleDefinition.ImportReference(streamReaderTypeDefinition.Find(".ctor", "Stream"));
         var assemblyTypeDefinition = coreTypes.First(x => x.Name == "Assembly");
         AssemblyTypeReference = ModuleDefinition.ImportReference(assemblyTypeDefinition);
-        GetExecutingAssemblyMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetExecutingAssembly"));
+
+        var typeType = coreTypes.First(x => x.Name == "Type");
+        GetTypeFromHandle = ModuleDefinition.ImportReference(typeType.Find("GetTypeFromHandle", "RuntimeTypeHandle"));
+
+        var introspectionExtensionsType = coreTypes.First(x => x.Name == "IntrospectionExtensions");
+        GetTypeInfo = ModuleDefinition.ImportReference(introspectionExtensionsType.Find("GetTypeInfo", "Type"));
+
+        var typeInfoType = coreTypes.First(x => x.Name == "TypeInfo");
+        GetAssembly = ModuleDefinition.ImportReference(typeInfoType.Find("get_Assembly"));
+
         GetManifestResourceStreamMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetManifestResourceStream", "String"));
     }
+
+
 
     void AppendTypes(string name, List<TypeDefinition> coreTypes)
     {
@@ -54,5 +65,7 @@ public partial class ModuleWeaver
     public TypeReference StreamReaderTypeReference;
     public TypeReference AssemblyTypeReference;
     public MethodReference GetManifestResourceStreamMethod;
-    public MethodReference GetExecutingAssemblyMethod;
+    public MethodReference GetTypeFromHandle;
+    public MethodReference GetTypeInfo;
+    public MethodReference GetAssembly;
 }

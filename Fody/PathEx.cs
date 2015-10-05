@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 public class PathEx
 {
-    public static string MakeRelativePath(String fromPath, String toPath)
+    public static string MakeRelativePath(string fromPath, string toPath)
     {
         toPath = toPath.TrimEnd('\\', '/');
         fromPath = fromPath.TrimEnd('\\', '/');

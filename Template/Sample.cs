@@ -2,6 +2,7 @@
 // ReSharper disable UnusedMember.Local
 using System.IO;
 using System.Reflection;
+// ReSharper disable UnusedVariable
 
 namespace Before
 {
@@ -26,7 +27,7 @@ namespace After
         void ReadResourceAsString()
         {
             string stringValue;
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(Sample).GetTypeInfo().Assembly;
             using (var stream = assembly.GetManifestResourceStream("AssemblyName.ResourceName"))
             using (var streamReader = new StreamReader(stream))
             {
@@ -36,7 +37,7 @@ namespace After
 
         void ReadResourceAsStream()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(Sample).GetTypeInfo().Assembly;
             var streamValue = assembly.GetManifestResourceStream("AssemblyName.ResourceName");
         }
     }

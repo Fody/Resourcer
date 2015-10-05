@@ -1,12 +1,14 @@
 ﻿
 #pragma warning disable 168
 using System.Reflection;
+// ReSharper disable UnusedVariable
 
 public class TemplateClass
 {
     public void AsStreamAfter()
     {
-        var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Foo");
+        var assembly = typeof(TemplateClass).GetTypeInfo().Assembly;
+        var stream = assembly.GetManifestResourceStream("Foo");
     }
 
     public void AsStreamBefore()

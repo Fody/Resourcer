@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -26,15 +27,33 @@ public static class CecilExtensions
     }
     public static MethodDefinition Find(this TypeDefinition typeReference, string name, params string[] paramTypes)
     {
-        foreach (var method in typeReference.Methods)
+        foreach (var method in typeReference.AllMethods())
         {
             if (method.IsMatch(name, paramTypes))
             {
                 return method;
             }
         }
-        throw new WeavingException(string.Format("Could not find '{0}' on '{1}'", name, typeReference.Name) );
+        throw new WeavingException($"Could not find '{name}' on '{typeReference.Name}'");
     }
+
+    public static IEnumerable<MethodDefinition> AllMethods(this TypeDefinition typeDefinition)
+    {
+        while (true)
+        {
+            if (typeDefinition.Name == "Object")
+            {
+                break;
+            }
+
+            foreach (var method in typeDefinition.Methods)
+            {
+                yield return method;
+            }
+            typeDefinition = typeDefinition.BaseType.Resolve();
+        }
+    }
+
 
     public static string GetNamespace(this TypeDefinition typeDefinition)
     {
