@@ -50,7 +50,6 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="NugetAssets\dotnet.targets" />
     <None Include="NugetAssets\install.ps" />
     <None Include="NugetAssets\Resourcer.Fody.nuspec" />
     <None Include="NugetAssets\uninstall.ps" />
@@ -125,7 +124,6 @@
     <Copy SourceFiles="$(ProjectDir)NugetAssets\Resourcer.Fody.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(OutputPath)Resourcer.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(OutputPath)Resourcer.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
-    <Copy SourceFiles="$(ProjectDir)NugetAssets\dotnet.targets" DestinationFiles="$(SolutionDir)NuGetBuild\build\dotnet\Resourcer.Fody.targets" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\install.ps" DestinationFiles="$(SolutionDir)NuGetBuild\Tools\install.ps1" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\uninstall.ps" DestinationFiles="$(SolutionDir)NuGetBuild\Tools\uninstall.ps1" />
     <PepitaPackage.CreatePackageTask NuGetBuildDirectory="$(SolutionDir)NuGetBuild" MetadataAssembly="$(OutputPath)Resourcer.Fody.dll" />
