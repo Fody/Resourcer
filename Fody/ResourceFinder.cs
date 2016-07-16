@@ -41,7 +41,13 @@ public partial class ModuleWeaver
 			return resource;
 		}
 
-        var message = $"Could not find a resource.\r\nTried:\r\n'{searchPath}'\r\n'{resourceNameFromDir}'\r\n'{resourceNameFromDir}'";
+        var message = $@"Could not find a resource.
+CodeDirPath:'{codeDirPath}'
+Tried:
+'{searchPath}'
+'{resourceNameFromDir}'
+'{resourceNameFromDir}'
+";
 	    LogErrorPoint(message, instruction.GetPreviousSequencePoint());
 	    return null;
 	}

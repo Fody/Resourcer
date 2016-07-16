@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers VerifyAssembly="true">
-  <Scalpel RemoveReferences="Microsoft.Build.Utilities.v4.0 | AssemblyToProcess" />
   <Caseless />
 </Weavers>
