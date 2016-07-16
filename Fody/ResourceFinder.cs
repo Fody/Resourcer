@@ -45,7 +45,7 @@ public partial class ModuleWeaver
 CodeDirPath:'{codeDirPath}'
 Tried:
 '{searchPath}'
-'{resourceNameFromDir}'
+'{resourceNameFromNamespace}'
 '{resourceNameFromDir}'
 ";
 	    LogErrorPoint(message, instruction.GetPreviousSequencePoint());

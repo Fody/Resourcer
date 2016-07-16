@@ -29,11 +29,11 @@ public class PathExTests
     public void Same()
     {
         var relativePath1 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess\");
-        Assert.AreEqual(@"\", relativePath1);
+        Assert.AreEqual("", relativePath1);
         var relativePath2 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess");
-        Assert.AreEqual(@"\", relativePath2);
+        Assert.AreEqual("", relativePath2);
         var relativePath3 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"C:\Code\Resourcer\AssemblyToProcess\");
-        Assert.AreEqual(@"\", relativePath3);
+        Assert.AreEqual("", relativePath3);
     }
 
     [Test]

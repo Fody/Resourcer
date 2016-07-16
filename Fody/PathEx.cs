@@ -14,7 +14,7 @@ public class PathEx
         var path = toPath.Substring(fromPath.Length).Trim('\\', '/');
         if (path.Length == 0)
         {
-            return Path.DirectorySeparatorChar.ToString();
+            return "";
         }
         return path;
     }

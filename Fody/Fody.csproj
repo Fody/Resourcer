@@ -64,7 +64,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <None Include="FodyWeavers.xml" />
+    <None Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="CecilExtensions.cs" />
     <Compile Include="HelperClassInjector.cs" />
     <Compile Include="MethodProcessor.cs" />
