@@ -32,12 +32,15 @@ public partial class ModuleWeaver
 
     string FindRelativePath(MethodDefinition method)
     {
-        return (from instruction in method.Body.Instructions 
-                where instruction.SequencePoint != null 
-                select Path.GetDirectoryName(instruction.SequencePoint.Document.Url) 
-                into directoryName 
-                select PathEx.MakeRelativePath(ProjectDirectoryPath, directoryName))
-            .FirstOrDefault();
+        foreach (var instruction in method.Body.Instructions)
+        {
+            if (instruction.SequencePoint != null)
+            {
+                var directoryName = Path.GetDirectoryName(instruction.SequencePoint.Document.Url);
+                return PathEx.MakeRelativePath(ProjectDirectoryPath, directoryName);
+            }
+        }
+        return null;
     }
 
     void ProcessInstruction(MethodDefinition method, Instruction instruction, string relativePath)
@@ -108,10 +111,10 @@ public partial class ModuleWeaver
         var stringInstruction = instruction.Previous;
         if (stringInstruction.OpCode != OpCodes.Ldstr)
         {
-            //TODO:
             throw new WeavingException("Can only be used on string literals");
         }
         var searchPath = (string) stringInstruction.Operand;
-        return FindResource(searchPath, method.DeclaringType.GetNamespace(), relativePath, stringInstruction);
+        var @namespace = method.DeclaringType.GetNamespace();
+        return FindResource(searchPath, @namespace, relativePath, stringInstruction);
     }
 }

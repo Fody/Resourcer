@@ -43,7 +43,7 @@ public class ModuleWeaverTests
                 {
                     ModuleDefinition = moduleDefinition,
                     AssemblyResolver = assemblyResolver,
-                    ProjectDirectoryPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess")
+                    ProjectDirectoryPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess"))
                 };
 
             weavingTask.Execute();
