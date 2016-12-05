@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-public class PathEx
+﻿public class PathEx
 {
     public static string MakeRelativePath(string fromPath, string toPath)
     {

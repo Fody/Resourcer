@@ -31,6 +31,7 @@ namespace After
             using (var stream = assembly.GetManifestResourceStream("AssemblyName.ResourceName"))
             using (var streamReader = new StreamReader(stream))
             {
+                // ReSharper disable once RedundantAssignment
                 stringValue = streamReader.ReadToEnd();
             }
         }

@@ -7,8 +7,11 @@ public static class CecilExtensions
 
     public static bool IsClass(this TypeDefinition x)
     {
-        return (x.BaseType != null) && !x.IsEnum && !x.IsInterface;
+        return x.BaseType != null &&
+               !x.IsEnum &&
+               !x.IsInterface;
     }
+
     public static SequencePoint GetPreviousSequencePoint(this Instruction instruction)
     {
         while (true)
