@@ -16,7 +16,7 @@ public class ResourceFinderTests
                            {
                                ModuleDefinition = definition
                            };
-        var actual = moduleWeaver.FindResource("AssemblyName.Namespace1.ResourceName", null, null, null);
+        var actual = moduleWeaver.FindResource("AssemblyName.Namespace1.ResourceName", null, null, null, null);
         Assert.AreEqual(expected, actual);
     }
 
@@ -30,7 +30,7 @@ public class ResourceFinderTests
                            {
                                ModuleDefinition = definition
                            };
-        var actual = moduleWeaver.FindResource("ResourceName", "AssemblyName.Namespace1", null, null);
+        var actual = moduleWeaver.FindResource("ResourceName", "AssemblyName.Namespace1", null, null, null);
         Assert.AreEqual(expected, actual);
     }
 
@@ -44,7 +44,7 @@ public class ResourceFinderTests
                            {
                                ModuleDefinition = definition
                            };
-        var actual = moduleWeaver.FindResource("ResourceName", "BadPrefix", @"Namespace1", null);
+        var actual = moduleWeaver.FindResource("ResourceName", "BadPrefix", @"Namespace1", null, null);
         Assert.AreEqual(expected, actual);
     }
 
@@ -58,7 +58,7 @@ public class ResourceFinderTests
                            {
                                ModuleDefinition = definition
                            };
-        var actual = moduleWeaver.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1", null);
+        var actual = moduleWeaver.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1", null, null);
         Assert.AreEqual(expected, actual);
     }
 
@@ -72,7 +72,7 @@ public class ResourceFinderTests
                            {
                                ModuleDefinition = definition
                            };
-        var actual = moduleWeaver.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null);
+        var actual = moduleWeaver.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null, null);
         Assert.AreEqual(expected, actual);
     }
 
@@ -86,7 +86,7 @@ public class ResourceFinderTests
                            {
                                ModuleDefinition = definition
                            };
-        var actual = moduleWeaver.FindResource(@"..\..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null);
+        var actual = moduleWeaver.FindResource(@"..\..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null, null);
         Assert.AreEqual(expected, actual);
     }
 }

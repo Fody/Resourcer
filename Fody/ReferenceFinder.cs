@@ -17,7 +17,7 @@ public partial class ModuleWeaver
         ReadToEndMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("ReadToEnd"));
 
         var exceptionTypeDefinition = coreTypes.First(x => x.Name == "Exception");
-		ExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionTypeDefinition.Find(".ctor", "String"));
+        ExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionTypeDefinition.Find(".ctor", "String"));
 
         var stringTypeDefinition = coreTypes.First(x => x.Name == "String");
         ConcatReference = ModuleDefinition.ImportReference(stringTypeDefinition.Find("Concat", "String", "String", "String"));
@@ -44,20 +44,18 @@ public partial class ModuleWeaver
         GetManifestResourceStreamMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetManifestResourceStream", "String"));
     }
 
-
-
     void AppendTypes(string name, List<TypeDefinition> coreTypes)
     {
-        var definition = AssemblyResolver.Resolve(name);
+        var definition = AssemblyResolver.Resolve(new AssemblyNameReference(name, null));
         if (definition != null)
         {
             coreTypes.AddRange(definition.MainModule.Types);
         }
     }
 
-	public MethodReference ConcatReference;
-	public MethodReference ExceptionConstructorReference;
-	public MethodReference DisposeStreamMethod;
+    public MethodReference ConcatReference;
+    public MethodReference ExceptionConstructorReference;
+    public MethodReference DisposeStreamMethod;
     public MethodReference DisposeTextReaderMethod;
     public MethodReference ReadToEndMethod;
     public MethodReference StreamReaderConstructorReference;

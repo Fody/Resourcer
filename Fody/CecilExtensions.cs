@@ -12,13 +12,14 @@ public static class CecilExtensions
                !x.IsInterface;
     }
 
-    public static SequencePoint GetPreviousSequencePoint(this Instruction instruction)
+    public static SequencePoint GetPreviousSequencePoint(this Instruction instruction, MethodDefinition methodDefinition)
     {
         while (true)
         {
-            if (instruction.SequencePoint != null)
+            var sequencePoint = methodDefinition.DebugInformation.GetSequencePoint(instruction);
+            if (sequencePoint != null)
             {
-                return instruction.SequencePoint;
+                return sequencePoint;
             }
 
             instruction = instruction.Previous;

@@ -1,11 +1,13 @@
-﻿public class PathEx
+﻿using System;
+
+public class PathEx
 {
     public static string MakeRelativePath(string fromPath, string toPath)
     {
         toPath = toPath.TrimEnd('\\', '/');
         fromPath = fromPath.TrimEnd('\\', '/');
 
-        if (!toPath.Contains(fromPath))
+        if (toPath.IndexOf(fromPath, StringComparison.OrdinalIgnoreCase) < 0)
         {
             return "";
         }

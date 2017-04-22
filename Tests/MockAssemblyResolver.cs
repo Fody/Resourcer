@@ -26,14 +26,9 @@ public class MockAssemblyResolver : IAssemblyResolver
 
     public AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters)
     {
-        throw new NotImplementedException();
-    }
-
-    public AssemblyDefinition Resolve(string fullName)
-    {
         try
         {
-            var codeBase = Assembly.Load(fullName).CodeBase.Replace("file:///", "");
+            var codeBase = Assembly.Load(name.FullName).CodeBase.Replace("file:///", "");
 
             return AssemblyDefinition.ReadAssembly(codeBase);
         }
@@ -43,10 +38,8 @@ public class MockAssemblyResolver : IAssemblyResolver
         }
     }
 
-    public AssemblyDefinition Resolve(string fullName, ReaderParameters parameters)
-    {
-        throw new NotImplementedException();
-    }
-
     public string Directory;
+    public void Dispose()
+    {
+    }
 }

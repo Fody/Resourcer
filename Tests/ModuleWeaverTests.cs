@@ -37,17 +37,18 @@ public class ModuleWeaverTests
                     SymbolStream = symbolStream,
                     SymbolReaderProvider = new PdbReaderProvider()
                 };
-            var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath, readerParameters);
-
-            var weavingTask = new ModuleWeaver
+            using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, readerParameters))
+            {
+                var weavingTask = new ModuleWeaver
                 {
                     ModuleDefinition = moduleDefinition,
                     AssemblyResolver = assemblyResolver,
                     ProjectDirectoryPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\"))
                 };
 
-            weavingTask.Execute();
-            moduleDefinition.Write(afterAssemblyPath);
+                weavingTask.Execute();
+                moduleDefinition.Write(afterAssemblyPath);
+            }
         }
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
