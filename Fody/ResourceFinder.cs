@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -6,7 +7,7 @@ using Mono.Cecil.Cil;
 public partial class ModuleWeaver
 {
 
-    public Resource FindResource(string searchPath, string @namespace, string codeDirPath, Instruction instruction, MethodDefinition methodDefinition)
+    public Resource FindResource(string searchPath, string @namespace, string codeDirPath, Instruction instruction, MethodDefinition method)
     {
         var resources = ModuleDefinition.Resources;
 
@@ -26,6 +27,10 @@ public partial class ModuleWeaver
             return resource;
         }
 
+        if (codeDirPath == null)
+        {
+            throw new WeavingException($"Could not find a relative path for `{method.FullName}`. Note that Resourcer requires debugs symbols to be enabled to derive paths.");
+        }
         //Relative based on dir
         var fakeDrive = @"C:\";
         var dirCombine = Path.GetFullPath(Path.Combine(fakeDrive, codeDirPath, searchPath))
@@ -48,7 +53,8 @@ Tried:
 '{resourceNameFromNamespace}'
 '{resourceNameFromDir}'
 ";
-        LogErrorPoint(message, instruction.GetPreviousSequencePoint(methodDefinition));
+        LogErrorPoint(message, instruction.GetPreviousSequencePoint(method));
         return null;
     }
 }
+

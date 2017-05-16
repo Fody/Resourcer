@@ -25,18 +25,18 @@ public class ModuleWeaverTests
         File.Copy(oldpdb, newpdb, true);
 
         var assemblyResolver = new MockAssemblyResolver
-            {
-                Directory = Path.GetDirectoryName(beforeAssemblyPath)
-            };
+        {
+            Directory = Path.GetDirectoryName(beforeAssemblyPath)
+        };
 
         using (var symbolStream = File.OpenRead(newpdb))
         {
             var readerParameters = new ReaderParameters
-                {
-                    ReadSymbols = true,
-                    SymbolStream = symbolStream,
-                    SymbolReaderProvider = new PdbReaderProvider()
-                };
+            {
+                ReadSymbols = true,
+                SymbolStream = symbolStream,
+                SymbolReaderProvider = new PdbReaderProvider()
+            };
             using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, readerParameters))
             {
                 var weavingTask = new ModuleWeaver
