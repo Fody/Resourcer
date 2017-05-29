@@ -1,3 +1,7 @@
+[![Chat on Gitter](https://img.shields.io/gitter/room/fody/fody.svg?style=flat)](https://gitter.im/Fody)
+[![NuGet Status](http://img.shields.io/nuget/v/Resourcer.Fody.svg?style=flat)](https://www.nuget.org/packages/Resourcer.Fody/)
+
+
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
 ![Icon](https://raw.github.com/Fody/Resourcer/master/Icons/package_icon.png)
@@ -10,15 +14,18 @@ Static resource names are checked at compile time. Use `Resource.AsString` and `
 
 Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`. 
 
-## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/Resourcer.Fody.svg?style=flat)](https://www.nuget.org/packages/Resourcer.Fody/)
+
+## The nuget package
 
 https://nuget.org/packages/Resourcer.Fody/
 
     PM> Install-Package Resourcer.Fody
-    
+
+
 ## What it does 
 
 Assuming you have an embedded resource at the root of your assembly named `ResourceName` and your assembly is named `AssemblyName`.
+
 
 ### Your Code
 
@@ -34,6 +41,7 @@ Assuming you have an embedded resource at the root of your assembly named `Resou
             var streamValue = Resource.AsStream("ResourceName");
         }
     }
+
 
 ### What gets compiled
 
@@ -56,8 +64,7 @@ Assuming you have an embedded resource at the root of your assembly named `Resou
             var streamValue = assembly.GetManifestResourceStream("AssemblyName.ResourceName");
         }
     }
-    
-## 
+
 
 ## Icon
 
