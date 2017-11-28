@@ -1,12 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 public partial class ModuleWeaver
 {
-
     public Resource FindResource(string searchPath, string @namespace, string codeDirPath, Instruction instruction, MethodDefinition method)
     {
         var resources = ModuleDefinition.Resources;
