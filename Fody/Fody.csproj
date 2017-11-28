@@ -82,9 +82,9 @@
       <Project>{7dec4e2d-f872-434e-a267-0bad65299950}</Project>
       <Name>AssemblyToProcess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ReferenceAssembly\ReferenceAssembly.csproj">
+    <ProjectReference Include="..\Resourcer\Resourcer.csproj">
       <Project>{6f416a34-2476-4a6b-b613-f9b46781c00d}</Project>
-      <Name>ReferenceAssembly</Name>
+      <Name>Resourcer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,6 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="ResourceInLinkProject.txt" />
-    <ProjectReference Include="..\ReferenceAssembly\ReferenceAssembly.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resourcer\Resourcer.csproj" />
   </ItemGroup>
 </Project>

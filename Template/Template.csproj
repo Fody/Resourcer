@@ -45,9 +45,9 @@
     <Compile Include="TemplateClass.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ReferenceAssembly\ReferenceAssembly.csproj">
+    <ProjectReference Include="..\Resourcer\Resourcer.csproj">
       <Project>{6F416A34-2476-4A6B-B613-F9B46781C00D}</Project>
-      <Name>ReferenceAssembly</Name>
+      <Name>Resourcer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -4,9 +4,6 @@
     <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ReferenceAssembly\ReferenceAssembly.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\LinkProject\TargetClassInLinkProject.cs">
       <Link>TargetClassInLinkProject.cs</Link>
     </Compile>
@@ -16,5 +13,8 @@
     <EmbeddedResource Include="..\LinkProject\ResourceInLinkProject.txt">
       <Link>ResourceInLinkProject.txt</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resourcer\Resourcer.csproj" />
   </ItemGroup>
 </Project>
