@@ -40,9 +40,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="NugetAssets\install.ps" />
-    <None Include="NugetAssets\Resourcer.Fody.nuspec" />
-    <None Include="NugetAssets\uninstall.ps" />
+    <None Include="Resourcer.Fody.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

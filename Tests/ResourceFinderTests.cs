@@ -5,7 +5,6 @@ using NUnit.Framework;
 [TestFixture]
 public class ResourceFinderTests
 {
-
     [Test]
     public void FullyQualified()
     {

@@ -3,7 +3,6 @@ using NUnit.Framework;
 [TestFixture]
 public class PathExTests
 {
-
     [Test]
     public void NoTrailingSlash()
     {
@@ -44,5 +43,4 @@ public class PathExTests
         var relativePath2 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart\");
         Assert.AreEqual("RelativePart", relativePath2);
     }
-
 }

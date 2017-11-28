@@ -41,6 +41,3 @@ namespace After
         }
     }
 }
-
-
-// ReSharper restore UnusedMember.Local

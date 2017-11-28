@@ -50,6 +50,7 @@ public class ModuleWeaverTests
                 moduleDefinition.Write(afterAssemblyPath);
             }
         }
+
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
 
@@ -67,7 +68,6 @@ public class ModuleWeaverTests
         }
     }
 
-
     [Test]
     public void AsStreamUnChecked()
     {
@@ -82,7 +82,7 @@ public class ModuleWeaverTests
     public void AsStreamReader()
     {
         var instance = GetInstance("TargetClass");
-        using (var streamReader = (StreamReader) instance.WithAsStreamReader())
+        using (var streamReader = (StreamReader)instance.WithAsStreamReader())
         {
             Assert.IsNotNull(streamReader);
             Assert.AreEqual("contents", streamReader.ReadToEnd());
@@ -103,9 +103,9 @@ public class ModuleWeaverTests
     public void AsString()
     {
         var instance = GetInstance("TargetClass");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents", result);
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents", result);
     }
 
     [Test]
@@ -113,53 +113,53 @@ public class ModuleWeaverTests
     {
         var instance = GetInstance("TargetClass");
         var result = (string)instance.FullyQualified();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents", result);
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents", result);
     }
 
     [Test]
-	public void AsStringCustomNamespace()
-	{
-		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents in namespace", result);
+    public void AsStringCustomNamespace()
+    {
+        var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents in namespace", result);
     }
 
     [Test]
     public void AsStringInLinkProject()
-	{
+    {
         var instance = GetInstance("TargetClassInLinkProject");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
         Assert.AreEqual("content in link project", result);
     }
 
     [Test]
     public void FullyQualifiedCustomNamespace()
-	{
-		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+    {
+        var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
         var result = (string)instance.FullyQualified();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents in namespace", result);
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents in namespace", result);
     }
 
 
     [Test]
     public void FullyQualifiedMisMatchNamespace()
-	{
+    {
         var instance = GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
         var result = (string)instance.FullyQualified();
-	    Assert.IsNotNull(result);
+        Assert.IsNotNull(result);
         Assert.AreEqual("contents in mismatch namespace", result);
     }
 
     [Test]
-	public void MisMatchNamespace()
-	{
+    public void MisMatchNamespace()
+    {
         var instance = GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
         Assert.AreEqual("contents in mismatch namespace", result);
     }
 
@@ -168,14 +168,14 @@ public class ModuleWeaverTests
     {
         var instance = GetInstance("TargetClass");
         var result = (string)instance.WithAsStringUnChecked("AssemblyToProcess.Resource.txt");
-	    Assert.AreEqual("contents", result);
+        Assert.AreEqual("contents", result);
     }
 
     [Test]
     public void AsStringUnChecked()
     {
         var instance = GetInstance("TargetClass");
-		Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"), "Could not find a resource named 'fakePath'.");
+        Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"), "Could not find a resource named 'fakePath'.");
     }
 
     dynamic GetInstance(string className)

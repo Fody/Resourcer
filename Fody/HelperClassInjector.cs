@@ -19,9 +19,9 @@ public partial class ModuleWeaver
         var targetType = new TypeDefinition(ModuleDefinition.Name + ".Resourcer", "ResourceHelper", typeAttributes, ModuleDefinition.TypeSystem.Object);
         ModuleDefinition.Types.Add(targetType);
         var fieldDefinition = new FieldDefinition("assembly", FieldAttributes.Static | FieldAttributes.Private, AssemblyTypeReference)
-                              {
-                                  DeclaringType = targetType
-                              };
+        {
+            DeclaringType = targetType
+        };
         targetType.Fields.Add(fieldDefinition);
         InjectConstructor(targetType, fieldDefinition);
 
@@ -73,7 +73,6 @@ public partial class ModuleWeaver
         inst.Add(Instruction.Create(OpCodes.Ret));
         targetType.Methods.Add(AsStreamReaderMethod);
     }
-
 
     void InjectAsString(TypeDefinition targetType, FieldDefinition assemblyField)
     {
@@ -140,17 +139,16 @@ public partial class ModuleWeaver
         inst.Add(Instruction.Create(OpCodes.Ret));
 
         var finallyHandler = new ExceptionHandler(ExceptionHandlerType.Finally)
-                             {
-                                 TryStart = assignAssemblyField,
-                                 TryEnd = assignReaderBeforeNullCheck,
-                                 HandlerStart = assignReaderBeforeNullCheck,
-                                 HandlerEnd = assignStringBeforeReturn
-                             };
+        {
+            TryStart = assignAssemblyField,
+            TryEnd = assignReaderBeforeNullCheck,
+            HandlerStart = assignReaderBeforeNullCheck,
+            HandlerEnd = assignStringBeforeReturn
+        };
         AsStringMethod.Body.ExceptionHandlers.Add(finallyHandler);
         AsStringMethod.Body.SimplifyMacros();
         targetType.Methods.Add(AsStringMethod);
     }
-
 
     void InjectConstructor(TypeDefinition targetType, FieldDefinition fieldDefinition)
     {

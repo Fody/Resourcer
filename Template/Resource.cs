@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-internal static class Resource
+static class Resource
 {
     static Assembly assembly;
 

@@ -4,7 +4,6 @@ using Mono.Cecil.Cil;
 
 public static class CecilExtensions
 {
-
     public static bool IsClass(this TypeDefinition x)
     {
         return x.BaseType != null &&
@@ -29,6 +28,7 @@ public static class CecilExtensions
             }
         }
     }
+
     public static MethodDefinition Find(this TypeDefinition typeReference, string name, params string[] paramTypes)
     {
         foreach (var method in typeReference.AllMethods())
@@ -38,6 +38,7 @@ public static class CecilExtensions
                 return method;
             }
         }
+
         throw new WeavingException($"Could not find '{name}' on '{typeReference.Name}'");
     }
 
@@ -54,10 +55,10 @@ public static class CecilExtensions
             {
                 yield return method;
             }
+
             typeDefinition = typeDefinition.BaseType.Resolve();
         }
     }
-
 
     public static string GetNamespace(this TypeDefinition typeDefinition)
     {
@@ -65,19 +66,22 @@ public static class CecilExtensions
         {
             return typeDefinition.DeclaringType.Namespace;
         }
+
         return typeDefinition.Namespace;
     }
 
-    public static bool IsMatch(this MethodReference methodReference,string name, params string[] paramTypes)
+    public static bool IsMatch(this MethodReference methodReference, string name, params string[] paramTypes)
     {
         if (methodReference.Parameters.Count != paramTypes.Length)
         {
             return false;
         }
+
         if (methodReference.Name != name)
         {
             return false;
         }
+
         for (var index = 0; index < methodReference.Parameters.Count; index++)
         {
             var parameterDefinition = methodReference.Parameters[index];
@@ -87,6 +91,7 @@ public static class CecilExtensions
                 return false;
             }
         }
+
         return true;
     }
 }

@@ -1,5 +1,4 @@
-﻿
-#pragma warning disable 168
+﻿#pragma warning disable 168
 using System.Reflection;
 // ReSharper disable UnusedVariable
 
@@ -21,4 +20,3 @@ public class TemplateClass
         var @string = Resource.AsString("Foo");
     }
 }
-#pragma warning restore 168

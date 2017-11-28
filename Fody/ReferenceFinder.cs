@@ -4,7 +4,6 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-
     public void FindCoreReferences()
     {
         var coreTypes = new List<TypeDefinition>();
