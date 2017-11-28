@@ -67,9 +67,9 @@
       <Project>{7dec4e2d-f872-434e-a267-0bad65299950}</Project>
       <Name>AssemblyToProcess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fody\Fody.csproj">
+    <ProjectReference Include="..\Resourcer.Fody\Resourcer.Fody.csproj">
       <Project>{c3578a7b-09a6-4444-9383-0deafa4958bd}</Project>
-      <Name>Fody</Name>
+      <Name>Resourcer.Fody</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

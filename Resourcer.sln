@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 14.0.22823.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fody", "Fody\Fody.csproj", "{C3578A7B-09A6-4444-9383-0DEAFA4958BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcer.Fody", "Resourcer.Fody\Resourcer.Fody.csproj", "{C3578A7B-09A6-4444-9383-0DEAFA4958BD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyToProcess", "AssemblyToProcess\AssemblyToProcess.csproj", "{7DEC4E2D-F872-434E-A267-0BAD65299950}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcer", "Resourcer\Resourcer.csproj", "{6F416A34-2476-4A6B-B613-F9B46781C00D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcer", "Resourcer\Resourcer.csproj", "{6F416A34-2476-4A6B-B613-F9B46781C00D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "Template\Template.csproj", "{A9C5C7AF-09D1-44E0-BBF2-EBE325B93D50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template", "Template\Template.csproj", "{A9C5C7AF-09D1-44E0-BBF2-EBE325B93D50}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkProject", "LinkProject\LinkProject.csproj", "{3FA20071-0A25-457A-8AFC-4417E70FB782}"
 EndProject
