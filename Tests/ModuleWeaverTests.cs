@@ -14,10 +14,7 @@ public class ModuleWeaverTests
 
     public ModuleWeaverTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
-#if (!DEBUG)
-        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
-#endif
+        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
         var oldpdb = beforeAssemblyPath.Replace(".dll", ".pdb");
         var newpdb = beforeAssemblyPath.Replace(".dll", "2.pdb");
