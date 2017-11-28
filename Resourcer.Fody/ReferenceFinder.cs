@@ -11,6 +11,7 @@ public partial class ModuleWeaver
         AppendTypes("System.IO", coreTypes);
         AppendTypes("System.Runtime", coreTypes);
         AppendTypes("System.Reflection", coreTypes);
+        AppendTypes("netstandard", coreTypes);
 
         var textReaderTypeDefinition = coreTypes.First(x => x.Name == "TextReader");
         ReadToEndMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("ReadToEnd"));

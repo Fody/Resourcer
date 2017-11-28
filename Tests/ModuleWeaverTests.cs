@@ -21,30 +21,28 @@ public class ModuleWeaverTests
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
         File.Copy(oldpdb, newpdb, true);
 
-        var assemblyResolver = new MockAssemblyResolver
+        using (var assemblyResolver = new MockAssemblyResolver())
         {
-            Directory = Path.GetDirectoryName(beforeAssemblyPath)
-        };
-
-        using (var symbolStream = File.OpenRead(newpdb))
-        {
-            var readerParameters = new ReaderParameters
+            using (var symbolStream = File.OpenRead(newpdb))
             {
-                ReadSymbols = true,
-                SymbolStream = symbolStream,
-                SymbolReaderProvider = new PdbReaderProvider()
-            };
-            using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, readerParameters))
-            {
-                var weavingTask = new ModuleWeaver
+                var readerParameters = new ReaderParameters
                 {
-                    ModuleDefinition = moduleDefinition,
-                    AssemblyResolver = assemblyResolver,
-                    ProjectDirectoryPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\..\AssemblyToProcess\"))
+                    ReadSymbols = true,
+                    SymbolStream = symbolStream,
+                    SymbolReaderProvider = new PdbReaderProvider()
                 };
+                using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, readerParameters))
+                {
+                    var weavingTask = new ModuleWeaver
+                    {
+                        ModuleDefinition = moduleDefinition,
+                        AssemblyResolver = assemblyResolver,
+                        ProjectDirectoryPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\..\AssemblyToProcess\"))
+                    };
 
-                weavingTask.Execute();
-                moduleDefinition.Write(afterAssemblyPath);
+                    weavingTask.Execute();
+                    moduleDefinition.Write(afterAssemblyPath);
+                }
             }
         }
 
@@ -181,9 +179,11 @@ public class ModuleWeaverTests
         return Activator.CreateInstance(type);
     }
 
+#if (NET452)
     [Test]
     public void PeVerify()
     {
         Verifier.Verify(beforeAssemblyPath, afterAssemblyPath);
     }
+#endif
 }
