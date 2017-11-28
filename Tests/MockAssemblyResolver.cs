@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using Mono.Cecil;
 
@@ -11,7 +10,7 @@ public class MockAssemblyResolver : IAssemblyResolver
         if (name.Name == "netstandard")
         {
             var netstandard = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles),
                 @"dotnet\sdk\NuGetFallbackFolder\netstandard.library\2.0.0\build\netstandard2.0\ref\netstandard.dll");
             return AssemblyDefinition.ReadAssembly(
                 fileName: netstandard,
