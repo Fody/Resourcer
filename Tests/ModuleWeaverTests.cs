@@ -4,6 +4,7 @@ using System.Reflection;
 using Mono.Cecil;
 using Mono.Cecil.Pdb;
 using NUnit.Framework;
+// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
 [TestFixture]
 public class ModuleWeaverTests
