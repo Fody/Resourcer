@@ -17,8 +17,8 @@ public partial class ModuleWeaver
         }
 
         //Relative based on namespace
-        var namespaceCombine = Path.Combine(@namespace.Replace(@"\", ".").Replace(@"\", "."), searchPath);
-        var resourceNameFromNamespace = namespaceCombine.Replace(@"\", ".").Replace(@"\", ".");
+        var namespaceCombine = Path.Combine(@namespace.Replace("/", ".").Replace(@"\", "."), searchPath);
+        var resourceNameFromNamespace = namespaceCombine.Replace("/", ".").Replace(@"\", ".");
         resource = resources.FirstOrDefault(x => x.Name == resourceNameFromNamespace);
         if (resource != null)
         {
