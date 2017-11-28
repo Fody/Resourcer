@@ -4,7 +4,7 @@
 
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
-![Icon](https://raw.github.com/Fody/Resourcer/master/Icons/package_icon.png)
+![Icon](https://raw.github.com/Fody/Resourcer/master/package_icon.png)
 
 Simplifies reading embedded resources from an Assembly.
 
@@ -15,11 +15,33 @@ Static resource names are checked at compile time. Use `Resource.AsString` and `
 Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`. 
 
 
-## The nuget package
+## Usage
 
-https://nuget.org/packages/Resourcer.Fody/
+See also [Fody usage](https://github.com/Fody/Fody#usage).
 
-    PM> Install-Package Resourcer.Fody
+
+### NuGet installation
+
+Install the [Resourcer.Fody NuGet package](https://nuget.org/packages/Resourcer.Fody/) and update the [Fody NuGet package](https://nuget.org/packages/Fody/):
+
+```
+PM> Install-Package Resourcer.Fody
+PM> Update-Package Fody
+```
+
+The `Update-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
+
+
+### Add to FodyWeavers.xml
+
+Add `<Resourcer/>` to [FodyWeavers.xml](https://github.com/Fody/Fody#add-fodyweaversxml)
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<Weavers>
+  <Resourcer/>
+</Weavers>
+```
 
 
 ## What it does 

@@ -45,9 +45,7 @@ public partial class ModuleWeaver
     }
 
     void ProcessInstruction(MethodDefinition method, Instruction instruction, string relativePath)
-    {
-        var methodReference = instruction.Operand as MemberReference;
-        if (methodReference == null)
+    {        if (!(instruction.Operand is MemberReference methodReference))
         {
             return;
         }

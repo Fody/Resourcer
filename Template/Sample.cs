@@ -25,14 +25,12 @@ namespace After
     class Sample
     {
         void ReadResourceAsString()
-        {
-            string stringValue;
-            var assembly = typeof(Sample).GetTypeInfo().Assembly;
+        {            var assembly = typeof(Sample).GetTypeInfo().Assembly;
             using (var stream = assembly.GetManifestResourceStream("AssemblyName.ResourceName"))
             using (var streamReader = new StreamReader(stream))
             {
                 // ReSharper disable once RedundantAssignment
-                stringValue = streamReader.ReadToEnd();
+                streamReader.ReadToEnd();
             }
         }
 
@@ -43,6 +41,3 @@ namespace After
         }
     }
 }
-
-
-// ReSharper restore UnusedMember.Local

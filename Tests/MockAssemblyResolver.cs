@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using Mono.Cecil;
 
@@ -7,21 +6,36 @@ public class MockAssemblyResolver : IAssemblyResolver
 {
     public AssemblyDefinition Resolve(AssemblyNameReference name)
     {
-        var fileName = Path.Combine(Directory, name.Name) + ".dll";
-        if (File.Exists(fileName))
+#if (NETCOREAPP2_0)
+        if (name.Name == "netstandard")
         {
-            return AssemblyDefinition.ReadAssembly(fileName);
+            var netstandard = Path.Combine(
+                System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles),
+                @"dotnet\sdk\NuGetFallbackFolder\netstandard.library\2.0.0\build\netstandard2.0\ref\netstandard.dll");
+            return AssemblyDefinition.ReadAssembly(
+                fileName: netstandard,
+                parameters: new ReaderParameters(ReadingMode.Deferred)
+                {
+                    AssemblyResolver = this
+                });
         }
+#endif
+        Assembly assembly;
         try
         {
-            var assembly = Assembly.Load(name.FullName);
-            var codeBase = assembly.CodeBase.Replace("file:///", "");
-            return AssemblyDefinition.ReadAssembly(codeBase);
+            assembly = Assembly.Load(name.FullName);
         }
         catch (FileNotFoundException)
         {
             return null;
         }
+        var codeBase = assembly.CodeBase.Replace("file:///", "");
+        return AssemblyDefinition.ReadAssembly(
+            fileName: codeBase,
+            parameters: new ReaderParameters(ReadingMode.Deferred)
+            {
+                AssemblyResolver = this
+            });
     }
 
     public AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters)
@@ -38,7 +52,6 @@ public class MockAssemblyResolver : IAssemblyResolver
         }
     }
 
-    public string Directory;
     public void Dispose()
     {
     }

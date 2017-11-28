@@ -4,6 +4,7 @@ using System.Reflection;
 using Mono.Cecil;
 using Mono.Cecil.Pdb;
 using NUnit.Framework;
+// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
 [TestFixture]
 public class ModuleWeaverTests
@@ -14,42 +15,38 @@ public class ModuleWeaverTests
 
     public ModuleWeaverTests()
     {
-        beforeAssemblyPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll"));
-#if (!DEBUG)
-        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
-#endif
+        beforeAssemblyPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "AssemblyToProcess.dll");
         afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
         var oldpdb = beforeAssemblyPath.Replace(".dll", ".pdb");
         var newpdb = beforeAssemblyPath.Replace(".dll", "2.pdb");
         File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
         File.Copy(oldpdb, newpdb, true);
 
-        var assemblyResolver = new MockAssemblyResolver
+        using (var assemblyResolver = new MockAssemblyResolver())
         {
-            Directory = Path.GetDirectoryName(beforeAssemblyPath)
-        };
-
-        using (var symbolStream = File.OpenRead(newpdb))
-        {
-            var readerParameters = new ReaderParameters
+            using (var symbolStream = File.OpenRead(newpdb))
             {
-                ReadSymbols = true,
-                SymbolStream = symbolStream,
-                SymbolReaderProvider = new PdbReaderProvider()
-            };
-            using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, readerParameters))
-            {
-                var weavingTask = new ModuleWeaver
+                var readerParameters = new ReaderParameters
                 {
-                    ModuleDefinition = moduleDefinition,
-                    AssemblyResolver = assemblyResolver,
-                    ProjectDirectoryPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\AssemblyToProcess\"))
+                    ReadSymbols = true,
+                    SymbolStream = symbolStream,
+                    SymbolReaderProvider = new PdbReaderProvider()
                 };
+                using (var moduleDefinition = ModuleDefinition.ReadModule(beforeAssemblyPath, readerParameters))
+                {
+                    var weavingTask = new ModuleWeaver
+                    {
+                        ModuleDefinition = moduleDefinition,
+                        AssemblyResolver = assemblyResolver,
+                        ProjectDirectoryPath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, @"..\..\..\..\AssemblyToProcess\"))
+                    };
 
-                weavingTask.Execute();
-                moduleDefinition.Write(afterAssemblyPath);
+                    weavingTask.Execute();
+                    moduleDefinition.Write(afterAssemblyPath);
+                }
             }
         }
+
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
 
@@ -67,7 +64,6 @@ public class ModuleWeaverTests
         }
     }
 
-
     [Test]
     public void AsStreamUnChecked()
     {
@@ -82,7 +78,7 @@ public class ModuleWeaverTests
     public void AsStreamReader()
     {
         var instance = GetInstance("TargetClass");
-        using (var streamReader = (StreamReader) instance.WithAsStreamReader())
+        using (var streamReader = (StreamReader)instance.WithAsStreamReader())
         {
             Assert.IsNotNull(streamReader);
             Assert.AreEqual("contents", streamReader.ReadToEnd());
@@ -103,9 +99,9 @@ public class ModuleWeaverTests
     public void AsString()
     {
         var instance = GetInstance("TargetClass");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents", result);
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents", result);
     }
 
     [Test]
@@ -113,53 +109,53 @@ public class ModuleWeaverTests
     {
         var instance = GetInstance("TargetClass");
         var result = (string)instance.FullyQualified();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents", result);
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents", result);
     }
 
     [Test]
-	public void AsStringCustomNamespace()
-	{
-		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents in namespace", result);
+    public void AsStringCustomNamespace()
+    {
+        var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents in namespace", result);
     }
 
     [Test]
     public void AsStringInLinkProject()
-	{
+    {
         var instance = GetInstance("TargetClassInLinkProject");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
         Assert.AreEqual("content in link project", result);
     }
 
     [Test]
     public void FullyQualifiedCustomNamespace()
-	{
-		var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
+    {
+        var instance = GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
         var result = (string)instance.FullyQualified();
-	    Assert.IsNotNull(result);
-		Assert.AreEqual("contents in namespace", result);
+        Assert.IsNotNull(result);
+        Assert.AreEqual("contents in namespace", result);
     }
 
 
     [Test]
     public void FullyQualifiedMisMatchNamespace()
-	{
+    {
         var instance = GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
         var result = (string)instance.FullyQualified();
-	    Assert.IsNotNull(result);
+        Assert.IsNotNull(result);
         Assert.AreEqual("contents in mismatch namespace", result);
     }
 
     [Test]
-	public void MisMatchNamespace()
-	{
+    public void MisMatchNamespace()
+    {
         var instance = GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
-	    var result = (string) instance.WithAsString();
-	    Assert.IsNotNull(result);
+        var result = (string)instance.WithAsString();
+        Assert.IsNotNull(result);
         Assert.AreEqual("contents in mismatch namespace", result);
     }
 
@@ -168,14 +164,14 @@ public class ModuleWeaverTests
     {
         var instance = GetInstance("TargetClass");
         var result = (string)instance.WithAsStringUnChecked("AssemblyToProcess.Resource.txt");
-	    Assert.AreEqual("contents", result);
+        Assert.AreEqual("contents", result);
     }
 
     [Test]
     public void AsStringUnChecked()
     {
         var instance = GetInstance("TargetClass");
-		Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"), "Could not find a resource named 'fakePath'.");
+        Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"), "Could not find a resource named 'fakePath'.");
     }
 
     dynamic GetInstance(string className)
@@ -184,9 +180,11 @@ public class ModuleWeaverTests
         return Activator.CreateInstance(type);
     }
 
+#if (NET452)
     [Test]
     public void PeVerify()
     {
         Verifier.Verify(beforeAssemblyPath, afterAssemblyPath);
     }
+#endif
 }
