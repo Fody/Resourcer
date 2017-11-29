@@ -44,12 +44,14 @@ public partial class ModuleWeaver
         GetManifestResourceStreamMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetManifestResourceStream", "String"));
     }
 
-    void AppendTypes(string name, List<TypeDefinition> coreTypes)
+    void AppendTypes(string name, List<TypeDefinition> types)
     {
         var definition = AssemblyResolver.Resolve(new AssemblyNameReference(name, null));
         if (definition != null)
         {
-            coreTypes.AddRange(definition.MainModule.Types);
+            var module = definition.MainModule;
+            types.AddRange(module.Types);
+            types.AddRange(module.ExportedTypes.Select(x => x.Resolve()).Where(x => x != null));
         }
     }
 
