@@ -4,7 +4,7 @@
 
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
-![Icon](https://raw.githubusercontent.comFody/Resourcer/master/package_icon.png)
+![Icon](https://raw.githubusercontent.com/Fody/Resourcer/master/package_icon.png)
 
 Simplifies reading embedded resources from an Assembly.
 
