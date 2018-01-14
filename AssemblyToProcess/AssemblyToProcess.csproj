@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
+    <DisableFody>true</DisableFody>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\LinkProject\TargetClassInLinkProject.cs">
@@ -13,8 +14,6 @@
     <EmbeddedResource Include="..\LinkProject\ResourceInLinkProject.txt">
       <Link>ResourceInLinkProject.txt</Link>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Resourcer\Resourcer.csproj" />
   </ItemGroup>
 </Project>

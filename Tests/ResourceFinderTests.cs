@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using Mono.Cecil;
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class ResourceFinderTests
 {
-    [Test]
+    [Fact]
     public void FullyQualified()
     {
         var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream) null);
@@ -16,10 +15,10 @@ public class ResourceFinderTests
                                ModuleDefinition = definition
                            };
         var actual = moduleWeaver.FindResource("AssemblyName.Namespace1.ResourceName", null, null, null, null);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
-    [Test]
+    [Fact]
     public void RelativeBasedOnNamespace()
     {
         var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream) null);
@@ -30,10 +29,10 @@ public class ResourceFinderTests
                                ModuleDefinition = definition
                            };
         var actual = moduleWeaver.FindResource("ResourceName", "AssemblyName.Namespace1", null, null, null);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
-    [Test]
+    [Fact]
     public void RelativeBasedOnDir()
     {
         var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream) null);
@@ -44,10 +43,10 @@ public class ResourceFinderTests
                                ModuleDefinition = definition
                            };
         var actual = moduleWeaver.FindResource("ResourceName", "BadPrefix", "Namespace1", null, null);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
-    [Test]
+    [Fact]
     public void RelativeBasedOnDirUpOneLevel()
     {
         var expected = new EmbeddedResource("AssemblyName.ResourceName", ManifestResourceAttributes.Public, (Stream) null);
@@ -58,10 +57,10 @@ public class ResourceFinderTests
                                ModuleDefinition = definition
                            };
         var actual = moduleWeaver.FindResource(@"..\ResourceName", "BadPrefix", "Namespace1", null, null);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
-    [Test]
+    [Fact]
     public void RelativeBasedOnDirUpOneLevelMultipleNamespaces()
     {
         var expected = new EmbeddedResource("AssemblyName.Namespace1.ResourceName", ManifestResourceAttributes.Public, (Stream) null);
@@ -72,10 +71,10 @@ public class ResourceFinderTests
                                ModuleDefinition = definition
                            };
         var actual = moduleWeaver.FindResource(@"..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null, null);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 
-    [Test]
+    [Fact]
     public void RelativeBasedOnDirUpTwoLevelsMultipleNamespaces()
     {
         var expected = new EmbeddedResource("AssemblyName.ResourceName", ManifestResourceAttributes.Public, (Stream) null);
@@ -86,6 +85,6 @@ public class ResourceFinderTests
                                ModuleDefinition = definition
                            };
         var actual = moduleWeaver.FindResource(@"..\..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null, null);
-        Assert.AreEqual(expected, actual);
+        Assert.Equal(expected, actual);
     }
 }

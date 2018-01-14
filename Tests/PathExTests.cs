@@ -1,46 +1,45 @@
-using NUnit.Framework;
+using Xunit;
 
-[TestFixture]
 public class PathExTests
 {
-    [Test]
+    [Fact]
     public void NoTrailingSlash()
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart");
-        Assert.AreEqual("RelativePart", relativePath);
+        Assert.Equal("RelativePart", relativePath);
     }
 
-    [Test]
+    [Fact]
     public void SourceIncludedFromSharedLink()
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Solution\Project", @"C:\Code\Solution\Common");
-        Assert.AreEqual("", relativePath);
+        Assert.Equal("", relativePath);
     }
 
-    [Test]
+    [Fact]
     public void TrailingSlash()
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess\RelativePart\");
-        Assert.AreEqual("RelativePart", relativePath);
+        Assert.Equal("RelativePart", relativePath);
     }
 
-    [Test]
+    [Fact]
     public void Same()
     {
         var relativePath1 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess\");
-        Assert.AreEqual("", relativePath1);
+        Assert.Equal("", relativePath1);
         var relativePath2 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess");
-        Assert.AreEqual("", relativePath2);
+        Assert.Equal("", relativePath2);
         var relativePath3 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"C:\Code\Resourcer\AssemblyToProcess\");
-        Assert.AreEqual("", relativePath3);
+        Assert.Equal("", relativePath3);
     }
 
-    [Test]
+    [Fact]
     public void MixedSlash()
     {
         var relativePath1 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart");
-        Assert.AreEqual("RelativePart", relativePath1);
+        Assert.Equal("RelativePart", relativePath1);
         var relativePath2 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart\");
-        Assert.AreEqual("RelativePart", relativePath2);
+        Assert.Equal("RelativePart", relativePath2);
     }
 }

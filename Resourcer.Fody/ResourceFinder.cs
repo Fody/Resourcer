@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using Fody;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 

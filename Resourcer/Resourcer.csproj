@@ -4,5 +4,12 @@
     <TargetFrameworks>net452;netstandard1.4</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <Authors>Simon Cropp</Authors>
+    <Description>Fody add-in for reading embedded resources.</Description>
+    <PackageTags>Embedded, Resource, ILWeaving, Fody, Cecil</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="2.3.18" PrivateAssets="None" />
+    <PackageReference Include="FodyPackaging" Version="2.3.18" PrivateAssets="All" />
+  </ItemGroup>
 </Project>

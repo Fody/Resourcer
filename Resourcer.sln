@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 14.0.22823.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcer.Fody", "Resourcer.Fody\Resourcer.Fody.csproj", "{C3578A7B-09A6-4444-9383-0DEAFA4958BD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6F416A34-2476-4A6B-B613-F9B46781C00D} = {6F416A34-2476-4A6B-B613-F9B46781C00D}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyToProcess", "AssemblyToProcess\AssemblyToProcess.csproj", "{7DEC4E2D-F872-434E-A267-0BAD65299950}"
 EndProject

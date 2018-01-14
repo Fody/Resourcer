@@ -1,58 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Mono.Cecil;
+﻿using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
     public void FindCoreReferences()
     {
-        var coreTypes = new List<TypeDefinition>();
-        AppendTypes("mscorlib", coreTypes);
-        AppendTypes("System.IO", coreTypes);
-        AppendTypes("System.Runtime", coreTypes);
-        AppendTypes("System.Reflection", coreTypes);
-        AppendTypes("netstandard", coreTypes);
-
-        var textReaderTypeDefinition = coreTypes.First(x => x.Name == "TextReader");
+        var textReaderTypeDefinition = FindType("System.IO.TextReader");
         ReadToEndMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("ReadToEnd"));
 
-        var exceptionTypeDefinition = coreTypes.First(x => x.Name == "Exception");
+        var exceptionTypeDefinition = FindType("System.Exception");
         ExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionTypeDefinition.Find(".ctor", "String"));
 
-        var stringTypeDefinition = coreTypes.First(x => x.Name == "String");
+        var stringTypeDefinition = FindType("System.String");
         ConcatReference = ModuleDefinition.ImportReference(stringTypeDefinition.Find("Concat", "String", "String", "String"));
 
         DisposeTextReaderMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("Dispose"));
-        var streamTypeDefinition = coreTypes.First(x => x.Name == "Stream");
+        var streamTypeDefinition = FindType("System.IO.Stream");
         DisposeStreamMethod = ModuleDefinition.ImportReference(streamTypeDefinition.Find("Dispose"));
         StreamTypeReference = ModuleDefinition.ImportReference(streamTypeDefinition);
-        var streamReaderTypeDefinition = coreTypes.First(x => x.Name == "StreamReader");
+        var streamReaderTypeDefinition = FindType("System.IO.StreamReader");
         StreamReaderTypeReference = ModuleDefinition.ImportReference(streamReaderTypeDefinition);
         StreamReaderConstructorReference = ModuleDefinition.ImportReference(streamReaderTypeDefinition.Find(".ctor", "Stream"));
-        var assemblyTypeDefinition = coreTypes.First(x => x.Name == "Assembly");
+        var assemblyTypeDefinition = FindType("System.Reflection.Assembly");
         AssemblyTypeReference = ModuleDefinition.ImportReference(assemblyTypeDefinition);
 
-        var typeType = coreTypes.First(x => x.Name == "Type");
+        var typeType = FindType("System.Type");
         GetTypeFromHandle = ModuleDefinition.ImportReference(typeType.Find("GetTypeFromHandle", "RuntimeTypeHandle"));
 
-        var introspectionExtensionsType = coreTypes.First(x => x.Name == "IntrospectionExtensions");
+        var introspectionExtensionsType = FindType("System.Reflection.IntrospectionExtensions");
         GetTypeInfo = ModuleDefinition.ImportReference(introspectionExtensionsType.Find("GetTypeInfo", "Type"));
 
-        var typeInfoType = coreTypes.First(x => x.Name == "TypeInfo");
+        var typeInfoType = FindType("System.Reflection.TypeInfo");
         GetAssembly = ModuleDefinition.ImportReference(typeInfoType.Find("get_Assembly"));
 
         GetManifestResourceStreamMethod = ModuleDefinition.ImportReference(assemblyTypeDefinition.Find("GetManifestResourceStream", "String"));
-    }
-
-    void AppendTypes(string name, List<TypeDefinition> types)
-    {
-        var definition = AssemblyResolver.Resolve(new AssemblyNameReference(name, null));
-        if (definition != null)
-        {
-            var module = definition.MainModule;
-            types.AddRange(module.Types);
-            types.AddRange(module.ExportedTypes.Select(x => x.Resolve()).Where(x => x != null));
-        }
     }
 
     public MethodReference ConcatReference;

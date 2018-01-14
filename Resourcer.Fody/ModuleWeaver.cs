@@ -1,23 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
+using Fody;
 
-public partial class ModuleWeaver
+public partial class ModuleWeaver: BaseModuleWeaver
 {
-    public Action<string> LogInfo { get; set; }
-    public Action<string, SequencePoint> LogErrorPoint { get; set; }
-    public ModuleDefinition ModuleDefinition { get; set; }
-    public IAssemblyResolver AssemblyResolver { get; set; }
-    public string ProjectDirectoryPath { get; set; }
-
-    public ModuleWeaver()
-    {
-        LogInfo = s => { };
-        LogErrorPoint = (s,p) => { };
-    }
-
-    public void Execute()
+    public override void Execute()
     {
         FindCoreReferences();
         InjectHelper();
@@ -36,6 +23,16 @@ public partial class ModuleWeaver
                 Process(method);
             }
         }
-        CleanReferences();
+    }
+
+    public override bool ShouldCleanReference => true;
+
+    public override IEnumerable<string> GetAssembliesForScanning()
+    {
+        yield return "mscorlib";
+        yield return "System.IO";
+        yield return "System.Runtime";
+        yield return "System.Reflection";
+        yield return "netstandard";
     }
 }
