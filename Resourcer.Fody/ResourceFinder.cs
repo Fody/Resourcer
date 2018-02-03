@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Fody;
 using Mono.Cecil;
@@ -32,13 +33,13 @@ public partial class ModuleWeaver
             throw new WeavingException($"Could not find a relative path for `{method.FullName}`. Note that Resourcer requires debugs symbols to be enabled to derive paths.");
         }
         //Relative based on dir
-        var fakeDrive = @"C:\";
-        var dirCombine = Path.GetFullPath(Path.Combine(fakeDrive, codeDirPath, searchPath))
-            .Replace(fakeDrive, string.Empty);
+        var combine = Path.Combine(codeDirPath, searchPath);
+        var dirCombine = Path.GetFullPath(combine)
+            .Replace(Directory.GetCurrentDirectory(),"");
 
         var suffix = dirCombine
-            .Replace(@"\", ".")
-            .Replace("/", ".");
+            .TrimStart(Path.DirectorySeparatorChar)
+            .Replace(Path.DirectorySeparatorChar, '.');
         var resourceNameFromDir = $"{Path.GetFileNameWithoutExtension(ModuleDefinition.Name)}.{suffix}";
         resource = resources.FirstOrDefault(x => x.Name == resourceNameFromDir);
         if (resource != null)
@@ -49,9 +50,9 @@ public partial class ModuleWeaver
         var message = $@"Could not find a resource.
 CodeDirPath:'{codeDirPath}'
 Tried:
-'{searchPath}'
-'{resourceNameFromNamespace}'
-'{resourceNameFromDir}'
+searchPath:'{searchPath}'
+resourceNameFromNamespace:'{resourceNameFromNamespace}'
+resourceNameFromDir:'{resourceNameFromDir}'
 ";
         LogErrorPoint(message, instruction.GetPreviousSequencePoint(method));
         return null;
