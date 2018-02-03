@@ -7,7 +7,6 @@ using Mono.Cecil.Cil;
 
 public partial class ModuleWeaver
 {
-
     public void Process(MethodDefinition method)
     {
         var relativePath = FindRelativePath(method);

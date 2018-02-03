@@ -7,6 +7,8 @@ public class PathExTests
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart");
         Assert.Equal("RelativePart", relativePath);
+        var linuxRelativePath = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess", "/Code/Resourcer/AssemblyToProcess/RelativePart");
+        Assert.Equal("RelativePart", linuxRelativePath);
     }
 
     [Fact]
@@ -14,6 +16,8 @@ public class PathExTests
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Solution\Project", @"C:\Code\Solution\Common");
         Assert.Equal("", relativePath);
+        var linuxRelativePath = PathEx.MakeRelativePath("/Code/Solution/Project", "/Code/Solution/Common");
+        Assert.Equal("", linuxRelativePath);
     }
 
     [Fact]
@@ -21,6 +25,8 @@ public class PathExTests
     {
         var relativePath = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess\", @"C:\Code\Resourcer\AssemblyToProcess\RelativePart\");
         Assert.Equal("RelativePart", relativePath);
+        var linuxRelativePath = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess/", "/Code/Resourcer/AssemblyToProcess/RelativePart/");
+        Assert.Equal("RelativePart", linuxRelativePath);
     }
 
     [Fact]
@@ -32,6 +38,12 @@ public class PathExTests
         Assert.Equal("", relativePath2);
         var relativePath3 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"C:\Code\Resourcer\AssemblyToProcess\");
         Assert.Equal("", relativePath3);
+        var linuxRelativePath1 = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess/", "/Code/Resourcer/AssemblyToProcess/");
+        Assert.Equal("", linuxRelativePath1);
+        var linuxRelativePath2 = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess/", "/Code/Resourcer/AssemblyToProcess");
+        Assert.Equal("", linuxRelativePath2);
+        var linuxRelativePath3 = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess", "/Code/Resourcer/AssemblyToProcess/");
+        Assert.Equal("", linuxRelativePath3);
     }
 
     [Fact]
@@ -41,5 +53,9 @@ public class PathExTests
         Assert.Equal("RelativePart", relativePath1);
         var relativePath2 = PathEx.MakeRelativePath(@"C:\Code\Resourcer\AssemblyToProcess", @"c:\Code\Resourcer\AssemblyToProcess\RelativePart\");
         Assert.Equal("RelativePart", relativePath2);
+        var linuxRelativePath1 = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess/", "/Code/Resourcer/AssemblyToProcess/RelativePart");
+        Assert.Equal("RelativePart", linuxRelativePath1);
+        var linuxRelativePath2 = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess", "/Code/Resourcer/AssemblyToProcess/RelativePart/");
+        Assert.Equal("RelativePart", linuxRelativePath2);
     }
 }
