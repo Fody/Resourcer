@@ -16,7 +16,7 @@ public partial class ModuleWeaver
     void InjectHelper()
     {
         var typeAttributes = TypeAttributes.AnsiClass | TypeAttributes.Sealed | TypeAttributes.Abstract | TypeAttributes.AutoClass;
-        var targetType = new TypeDefinition(ModuleDefinition.Name + ".Resourcer", "ResourceHelper", typeAttributes, ModuleDefinition.TypeSystem.Object);
+        var targetType = new TypeDefinition(ModuleDefinition.Name + ".Resourcer", "ResourceHelper", typeAttributes, TypeSystem.ObjectReference);
         ModuleDefinition.Types.Add(targetType);
         var fieldDefinition = new FieldDefinition("assembly", FieldAttributes.Static | FieldAttributes.Private, AssemblyTypeReference)
         {
@@ -33,7 +33,7 @@ public partial class ModuleWeaver
     void InjectAsStream(TypeDefinition targetType, FieldDefinition fieldDefinition)
     {
         AsStreamMethod = new MethodDefinition("AsStream", staticMethodAttributes, StreamTypeReference);
-        var pathParam = new ParameterDefinition(ModuleDefinition.TypeSystem.String);
+        var pathParam = new ParameterDefinition(TypeSystem.StringReference);
         AsStreamMethod.Parameters.Add(pathParam);
         AsStreamMethod.Body.InitLocals = true;
         var inst = AsStreamMethod.Body.Instructions;
@@ -49,7 +49,7 @@ public partial class ModuleWeaver
         AsStreamReaderMethod = new MethodDefinition("AsStreamReader", staticMethodAttributes, StreamReaderTypeReference);
         var streamVariable = new VariableDefinition(StreamTypeReference);
         AsStreamReaderMethod.Body.Variables.Add(streamVariable);
-        var pathParam = new ParameterDefinition(ModuleDefinition.TypeSystem.String);
+        var pathParam = new ParameterDefinition(TypeSystem.StringReference);
         AsStreamReaderMethod.Parameters.Add(pathParam);
         AsStreamReaderMethod.Body.InitLocals = true;
         var inst = AsStreamReaderMethod.Body.Instructions;
@@ -76,8 +76,8 @@ public partial class ModuleWeaver
 
     void InjectAsString(TypeDefinition targetType, FieldDefinition assemblyField)
     {
-        AsStringMethod = new MethodDefinition("AsString", staticMethodAttributes, ModuleDefinition.TypeSystem.String);
-        var pathParam = new ParameterDefinition(ModuleDefinition.TypeSystem.String);
+        AsStringMethod = new MethodDefinition("AsString", staticMethodAttributes, TypeSystem.StringReference);
+        var pathParam = new ParameterDefinition(TypeSystem.StringReference);
         AsStringMethod.Parameters.Add(pathParam);
 
         AsStringMethod.Body.InitLocals = true;
@@ -85,7 +85,7 @@ public partial class ModuleWeaver
         AsStringMethod.Body.Variables.Add(readerVar);
         var streamVar = new VariableDefinition(StreamTypeReference);
         AsStringMethod.Body.Variables.Add(streamVar);
-        var stringVar = new VariableDefinition(ModuleDefinition.TypeSystem.String);
+        var stringVar = new VariableDefinition(TypeSystem.StringReference);
         AsStringMethod.Body.Variables.Add(stringVar);
 
         var inst = AsStringMethod.Body.Instructions;
@@ -157,7 +157,7 @@ public partial class ModuleWeaver
                                             | MethodAttributes.RTSpecialName
                                             | MethodAttributes.HideBySig
                                             | MethodAttributes.Private;
-        var staticConstructor = new MethodDefinition(".cctor", attributes, ModuleDefinition.TypeSystem.Void);
+        var staticConstructor = new MethodDefinition(".cctor", attributes, TypeSystem.VoidReference);
         targetType.Methods.Add(staticConstructor);
         var instructions = staticConstructor.Body.Instructions;
         instructions.Add(Instruction.Create(OpCodes.Ldtoken, targetType));

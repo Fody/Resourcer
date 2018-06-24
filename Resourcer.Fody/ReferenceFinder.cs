@@ -10,8 +10,7 @@ public partial class ModuleWeaver
         var exceptionTypeDefinition = FindType("System.Exception");
         ExceptionConstructorReference = ModuleDefinition.ImportReference(exceptionTypeDefinition.Find(".ctor", "String"));
 
-        var stringTypeDefinition = FindType("System.String");
-        ConcatReference = ModuleDefinition.ImportReference(stringTypeDefinition.Find("Concat", "String", "String", "String"));
+        ConcatReference = ModuleDefinition.ImportReference(TypeSystem.StringDefinition.Find("Concat", "String", "String", "String"));
 
         DisposeTextReaderMethod = ModuleDefinition.ImportReference(textReaderTypeDefinition.Find("Dispose"));
         var streamTypeDefinition = FindType("System.IO.Stream");
