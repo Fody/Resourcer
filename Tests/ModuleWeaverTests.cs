@@ -2,11 +2,12 @@
 using System.IO;
 using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
 // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
-public class ModuleWeaverTests
+public class ModuleWeaverTests :
+    XunitLoggingBase
 {
     static TestResult testResult;
 
@@ -144,5 +145,10 @@ public class ModuleWeaverTests
         var instance = testResult.GetInstance("TargetClass");
         var exception = Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"));
         Assert.Equal("Could not find a resource named 'fakePath'.", exception.Message);
+    }
+
+    public ModuleWeaverTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }

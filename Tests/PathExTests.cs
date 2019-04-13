@@ -1,6 +1,8 @@
 using Xunit;
+using Xunit.Abstractions;
 
-public class PathExTests
+public class PathExTests :
+    XunitLoggingBase
 {
     [Fact]
     public void NoTrailingSlash()
@@ -57,5 +59,10 @@ public class PathExTests
         Assert.Equal("RelativePart", linuxRelativePath1);
         var linuxRelativePath2 = PathEx.MakeRelativePath("/Code/Resourcer/AssemblyToProcess", "/Code/Resourcer/AssemblyToProcess/RelativePart/");
         Assert.Equal("RelativePart", linuxRelativePath2);
+    }
+
+    public PathExTests(ITestOutputHelper output) : 
+        base(output)
+    {
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System.IO;
 using Mono.Cecil;
 using Xunit;
+using Xunit.Abstractions;
 
-public class ResourceFinderTests
+public class ResourceFinderTests :
+    XunitLoggingBase
 {
     [Fact]
     public void FullyQualified()
@@ -86,5 +88,10 @@ public class ResourceFinderTests
                            };
         var actual = moduleWeaver.FindResource(@"..\..\ResourceName", "BadPrefix", @"Namespace1\Namespace2", null, null);
         Assert.Equal(expected, actual);
+    }
+
+    public ResourceFinderTests(ITestOutputHelper output) : 
+        base(output)
+    {
     }
 }
