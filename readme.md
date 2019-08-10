@@ -87,4 +87,4 @@ Assuming you have an embedded resource at the root of your assembly named `Resou
 
 ## Icon
 
-<a href="http://thenounproject.com/noun/box/#icon-No11029" target="_blank">Box</a> designed by <a href="http://thenounproject.com/molumen" target="_blank">Mourad Mokrane</a> from The Noun Project
+[Box](https://thenounproject.com/noun/box/#icon-No11029) designed by [Mourad Mokrane](https://thenounproject.com/molumen) from [The Noun Project](https://thenounproject.com).
