@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class PathExTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     [Fact]
     public void NoTrailingSlash()

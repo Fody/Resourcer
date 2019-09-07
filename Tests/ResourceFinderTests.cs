@@ -4,7 +4,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 public class ResourceFinderTests :
-    XunitLoggingBase
+    XunitApprovalBase
 {
     [Fact]
     public void FullyQualified()
