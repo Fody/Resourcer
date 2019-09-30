@@ -6,8 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="ResourceInLinkProject.txt" />
-  </ItemGroup>
-  <ItemGroup>
+
     <ProjectReference Include="..\Resourcer\Resourcer.csproj" />
   </ItemGroup>
 </Project>
