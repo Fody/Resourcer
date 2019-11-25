@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using Mono.Cecil;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class ResourceFinderTests :
-    XunitApprovalBase
+    VerifyBase
 {
     [Fact]
     public void FullyQualified()

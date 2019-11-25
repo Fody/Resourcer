@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using Fody;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
 public class ModuleWeaverTests :
-    XunitApprovalBase
+    VerifyBase
 {
     static TestResult testResult;
 
