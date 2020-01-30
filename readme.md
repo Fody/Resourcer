@@ -1,16 +1,18 @@
+# <img src="/package_icon.png" height="30px"> Resourcer.Fody
+
 [![Chat on Gitter](https://img.shields.io/gitter/room/fody/fody.svg)](https://gitter.im/Fody/Fody)
 [![NuGet Status](https://img.shields.io/nuget/v/Resourcer.Fody.svg)](https://www.nuget.org/packages/Resourcer.Fody/)
-
-
-## This is an add-in for [Fody](https://github.com/Fody/Home/)
-
-![Icon](https://raw.githubusercontent.com/Fody/Resourcer/master/package_icon.png)
 
 Simplifies reading embedded resources from an Assembly.
 
 Static resource names are checked at compile time. Use `Resource.AsString` and `Resource.AsStream`.
 
-Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`. 
+Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`.
+
+
+### This is an add-in for [Fody](https://github.com/Fody/Home/)
+
+**It is expected that all developers using Fody either [become a Patron on OpenCollective](https://opencollective.com/fody/), or have a [Tidelift Subscription](https://tidelift.com/subscription/pkg/nuget-fody?utm_source=nuget-fody&utm_medium=referral&utm_campaign=enterprise).**
 
 
 ## Usage
