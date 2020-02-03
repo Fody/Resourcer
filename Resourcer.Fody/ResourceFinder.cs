@@ -53,7 +53,7 @@ searchPath:'{searchPath}'
 resourceNameFromNamespace:'{resourceNameFromNamespace}'
 resourceNameFromDir:'{resourceNameFromDir}'
 ";
-        LogErrorPoint(message, instruction.GetPreviousSequencePoint(method));
+        WriteError(message, instruction.GetPreviousSequencePoint(method));
         return null;
     }
 }
