@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IO;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
 // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
-public class ModuleWeaverTests :
-    VerifyBase
+public class ModuleWeaverTests
 {
     static TestResult testResult;
 
@@ -146,10 +143,5 @@ public class ModuleWeaverTests :
         var instance = testResult.GetInstance("TargetClass");
         var exception = Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"));
         Assert.Equal("Could not find a resource named 'fakePath'.", exception.Message);
-    }
-
-    public ModuleWeaverTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }
