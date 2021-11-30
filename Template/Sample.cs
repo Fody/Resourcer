@@ -25,7 +25,8 @@ namespace After
     class Sample
     {
         void ReadResourceAsString()
-        {            var assembly = typeof(Sample).GetTypeInfo().Assembly;
+        {
+            var assembly = typeof(Sample).Assembly;
             using (var stream = assembly.GetManifestResourceStream("AssemblyName.ResourceName"))
             using (var streamReader = new StreamReader(stream))
             {
@@ -36,7 +37,7 @@ namespace After
 
         void ReadResourceAsStream()
         {
-            var assembly = typeof(Sample).GetTypeInfo().Assembly;
+            var assembly = typeof(Sample).Assembly;
             var streamValue = assembly.GetManifestResourceStream("AssemblyName.ResourceName");
         }
     }

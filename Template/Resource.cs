@@ -8,7 +8,7 @@ static class Resource
 
     static Resource()
     {
-        assembly = typeof(Resource).GetTypeInfo().Assembly;
+        assembly = typeof(Resource).Assembly;
     }
 
     public static string AsString(string path)

@@ -6,7 +6,7 @@ public class TemplateClass
 {
     public void AsStreamAfter()
     {
-        var assembly = typeof(TemplateClass).GetTypeInfo().Assembly;
+        var assembly = typeof(TemplateClass).Assembly;
         var stream = assembly.GetManifestResourceStream("Foo");
     }
 
