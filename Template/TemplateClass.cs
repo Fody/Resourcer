@@ -1,5 +1,4 @@
 ﻿#pragma warning disable 168
-using System.Reflection;
 // ReSharper disable UnusedVariable
 
 public class TemplateClass

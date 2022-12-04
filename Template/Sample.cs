@@ -1,7 +1,6 @@
 ﻿
 // ReSharper disable UnusedMember.Local
 using System.IO;
-using System.Reflection;
 // ReSharper disable UnusedVariable
 
 namespace Before
