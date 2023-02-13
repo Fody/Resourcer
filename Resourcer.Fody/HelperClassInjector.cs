@@ -32,7 +32,7 @@ public partial class ModuleWeaver
 
     void InjectAsStream(TypeDefinition targetType, FieldDefinition fieldDefinition)
     {
-        AsStreamMethod = new MethodDefinition("AsStream", staticMethodAttributes, StreamTypeReference);
+        AsStreamMethod = new("AsStream", staticMethodAttributes, StreamTypeReference);
         var pathParam = new ParameterDefinition(TypeSystem.StringReference);
         AsStreamMethod.Parameters.Add(pathParam);
         AsStreamMethod.Body.InitLocals = true;
@@ -46,7 +46,7 @@ public partial class ModuleWeaver
 
     void InjectAsStreamReader(TypeDefinition targetType, FieldDefinition fieldDefinition)
     {
-        AsStreamReaderMethod = new MethodDefinition("AsStreamReader", staticMethodAttributes, StreamReaderTypeReference);
+        AsStreamReaderMethod = new("AsStreamReader", staticMethodAttributes, StreamReaderTypeReference);
         var streamVariable = new VariableDefinition(StreamTypeReference);
         AsStreamReaderMethod.Body.Variables.Add(streamVariable);
         var pathParam = new ParameterDefinition(TypeSystem.StringReference);
@@ -76,7 +76,7 @@ public partial class ModuleWeaver
 
     void InjectAsString(TypeDefinition targetType, FieldDefinition assemblyField)
     {
-        AsStringMethod = new MethodDefinition("AsString", staticMethodAttributes, TypeSystem.StringReference);
+        AsStringMethod = new("AsString", staticMethodAttributes, TypeSystem.StringReference);
         var pathParam = new ParameterDefinition(TypeSystem.StringReference);
         AsStringMethod.Parameters.Add(pathParam);
 

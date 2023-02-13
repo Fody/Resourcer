@@ -26,7 +26,7 @@ public partial class ModuleWeaver
             {
                 throw;
             }
-            throw new Exception($"Failed to process '{method.FullName}'.", exception);
+            throw new($"Failed to process '{method.FullName}'.", exception);
         }
     }
 
@@ -45,7 +45,8 @@ public partial class ModuleWeaver
     }
 
     void ProcessInstruction(MethodDefinition method, Instruction instruction, string relativePath)
-    {        if (!(instruction.Operand is MemberReference methodReference))
+    {
+        if (instruction.Operand is not MemberReference methodReference)
         {
             return;
         }

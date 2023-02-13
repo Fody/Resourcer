@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 
 static class Resource
@@ -21,10 +20,10 @@ static class Resource
             stream = assembly.GetManifestResourceStream(path);
             if (stream == null)
             {
-	            var message = string.Concat("Could not find a resource named '", path,"'.");
-	            throw new Exception(message);
+                throw new($"Could not find a resource named '{path}'.");
             }
-	        streamReader = new StreamReader(stream);
+
+            streamReader = new(stream);
             value = streamReader.ReadToEnd();
         }
         finally
@@ -32,6 +31,7 @@ static class Resource
             streamReader?.Dispose();
             stream?.Dispose();
         }
+
         return value;
     }
 
@@ -47,6 +47,7 @@ static class Resource
         {
             return null;
         }
-        return new StreamWriter(stream);
+
+        return new(stream);
     }
 }
