@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Text;
 using Fody;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -46,14 +47,21 @@ public partial class ModuleWeaver
             return resource;
         }
 
-        var message = $@"Could not find a resource.
-CodeDirPath:'{codeDirPath}'
-Tried:
-searchPath:'{searchPath}'
-resourceNameFromNamespace:'{resourceNameFromNamespace}'
-resourceNameFromDir:'{resourceNameFromDir}'
-";
-        WriteError(message, instruction.GetPreviousSequencePoint(method));
+        var message = new StringBuilder($"""
+            Could not find a resource.
+            CodeDirPath:'{codeDirPath}'
+            Tried:
+              * searchPath:'{searchPath}'
+              * resourceNameFromNamespace:'{resourceNameFromNamespace}'
+              * resourceNameFromDir:'{resourceNameFromDir}'
+            Resources:
+
+            """);
+        foreach (var item in resources)
+        {
+            message.AppendLine($"  * {item.Name}");
+        }
+        WriteError(message.ToString(), instruction.GetPreviousSequencePoint(method));
         return null;
     }
 }
