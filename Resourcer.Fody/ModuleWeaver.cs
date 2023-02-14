@@ -2,17 +2,16 @@
 using System.Linq;
 using Fody;
 
-public partial class ModuleWeaver: BaseModuleWeaver
+public partial class ModuleWeaver : BaseModuleWeaver
 {
     public override void Execute()
     {
         FindCoreReferences();
         InjectHelper();
         foreach (var type in ModuleDefinition
-            .GetTypes()
-            .Where(x => x.IsClass()))
+                     .GetTypes()
+                     .Where(_ => _.IsClass()))
         {
-
             foreach (var method in type.Methods)
             {
                 //skip for abstract and delegates
@@ -20,6 +19,7 @@ public partial class ModuleWeaver: BaseModuleWeaver
                 {
                     continue;
                 }
+
                 Process(method);
             }
         }

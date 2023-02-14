@@ -5,18 +5,18 @@ using Mono.Cecil.Cil;
 
 public static class CecilExtensions
 {
-    public static bool IsClass(this TypeDefinition x)
+    public static bool IsClass(this TypeDefinition type)
     {
-        return x.BaseType != null &&
-               !x.IsEnum &&
-               !x.IsInterface;
+        return type.BaseType != null &&
+               !type.IsEnum &&
+               !type.IsInterface;
     }
 
-    public static SequencePoint GetPreviousSequencePoint(this Instruction instruction, MethodDefinition methodDefinition)
+    public static SequencePoint GetPreviousSequencePoint(this Instruction instruction, MethodDefinition method)
     {
         while (true)
         {
-            var sequencePoint = methodDefinition.DebugInformation.GetSequencePoint(instruction);
+            var sequencePoint = method.DebugInformation.GetSequencePoint(instruction);
             if (sequencePoint != null)
             {
                 return sequencePoint;
@@ -30,9 +30,9 @@ public static class CecilExtensions
         }
     }
 
-    public static MethodDefinition Find(this TypeDefinition typeReference, string name, params string[] paramTypes)
+    public static MethodDefinition Find(this TypeDefinition type, string name, params string[] paramTypes)
     {
-        foreach (var method in typeReference.AllMethods())
+        foreach (var method in type.AllMethods())
         {
             if (method.IsMatch(name, paramTypes))
             {
@@ -40,52 +40,52 @@ public static class CecilExtensions
             }
         }
 
-        throw new WeavingException($"Could not find '{name}' on '{typeReference.Name}'");
+        throw new WeavingException($"Could not find '{name}' on '{type.Name}'");
     }
 
-    public static IEnumerable<MethodDefinition> AllMethods(this TypeDefinition typeDefinition)
+    public static IEnumerable<MethodDefinition> AllMethods(this TypeDefinition type)
     {
         while (true)
         {
-            if (typeDefinition.Name == "Object")
+            if (type.Name == "Object")
             {
                 break;
             }
 
-            foreach (var method in typeDefinition.Methods)
+            foreach (var method in type.Methods)
             {
                 yield return method;
             }
 
-            typeDefinition = typeDefinition.BaseType.Resolve();
+            type = type.BaseType.Resolve();
         }
     }
 
-    public static string GetNamespace(this TypeDefinition typeDefinition)
+    public static string GetNamespace(this TypeDefinition type)
     {
-        if (typeDefinition.IsNested)
+        if (type.IsNested)
         {
-            return typeDefinition.DeclaringType.Namespace;
+            return type.DeclaringType.Namespace;
         }
 
-        return typeDefinition.Namespace;
+        return type.Namespace;
     }
 
-    public static bool IsMatch(this MethodReference methodReference, string name, params string[] paramTypes)
+    public static bool IsMatch(this MethodReference method, string name, params string[] paramTypes)
     {
-        if (methodReference.Parameters.Count != paramTypes.Length)
+        if (method.Parameters.Count != paramTypes.Length)
         {
             return false;
         }
 
-        if (methodReference.Name != name)
+        if (method.Name != name)
         {
             return false;
         }
 
-        for (var index = 0; index < methodReference.Parameters.Count; index++)
+        for (var index = 0; index < method.Parameters.Count; index++)
         {
-            var parameterDefinition = methodReference.Parameters[index];
+            var parameterDefinition = method.Parameters[index];
             var paramType = paramTypes[index];
             if (parameterDefinition.ParameterType.Name != paramType)
             {

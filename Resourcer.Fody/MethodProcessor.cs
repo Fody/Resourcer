@@ -13,7 +13,7 @@ public partial class ModuleWeaver
 
         try
         {
-            var instructions = method.Body.Instructions.Where(x => x.OpCode == OpCodes.Call).ToList();
+            var instructions = method.Body.Instructions.Where(_ => _.OpCode == OpCodes.Call).ToList();
 
             foreach (var instruction in instructions)
             {

@@ -12,7 +12,7 @@ public partial class ModuleWeaver
         var resources = ModuleDefinition.Resources;
 
         //Fully qualified
-        var resource = resources.FirstOrDefault(x => x.Name == searchPath);
+        var resource = resources.FirstOrDefault(_ => _.Name == searchPath);
         if (resource != null)
         {
             return resource;
@@ -21,7 +21,7 @@ public partial class ModuleWeaver
         //Relative based on namespace
         var namespaceCombine = Path.Combine(@namespace.Replace("/", ".").Replace(@"\", "."), searchPath);
         var resourceNameFromNamespace = namespaceCombine.Replace("/", ".").Replace(@"\", ".");
-        resource = resources.FirstOrDefault(x => x.Name == resourceNameFromNamespace);
+        resource = resources.FirstOrDefault(_ => _.Name == resourceNameFromNamespace);
 
         if (resource != null)
         {
@@ -41,7 +41,7 @@ public partial class ModuleWeaver
             .TrimStart(Path.DirectorySeparatorChar)
             .Replace(Path.DirectorySeparatorChar, '.');
         var resourceNameFromDir = $"{Path.GetFileNameWithoutExtension(ModuleDefinition.Name)}.{suffix}";
-        resource = resources.FirstOrDefault(x => x.Name == resourceNameFromDir);
+        resource = resources.FirstOrDefault(_ => _.Name == resourceNameFromDir);
         if (resource != null)
         {
             return resource;
@@ -51,9 +51,9 @@ public partial class ModuleWeaver
             Could not find a resource.
             CodeDirPath:'{codeDirPath}'
             Tried:
-              * searchPath:'{searchPath}'
-              * resourceNameFromNamespace:'{resourceNameFromNamespace}'
-              * resourceNameFromDir:'{resourceNameFromDir}'
+              * Search path:'{searchPath}'
+              * Resource name from namespace:'{resourceNameFromNamespace}'
+              * Resource name from directory:'{resourceNameFromDir}'
             Resources:
 
             """);
