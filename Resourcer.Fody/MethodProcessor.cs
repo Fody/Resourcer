@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.IO;
 using System.Linq;
 using Fody;
@@ -30,7 +31,7 @@ public partial class ModuleWeaver
         }
     }
 
-    string FindRelativePath(MethodDefinition method)
+    string? FindRelativePath(MethodDefinition method)
     {
         foreach (var instruction in method.Body.Instructions)
         {
@@ -41,10 +42,11 @@ public partial class ModuleWeaver
                 return PathEx.MakeRelativePath(ProjectDirectoryPath, directoryName);
             }
         }
+
         return null;
     }
 
-    void ProcessInstruction(MethodDefinition method, Instruction instruction, string relativePath)
+    void ProcessInstruction(MethodDefinition method, Instruction instruction, string? relativePath)
     {
         if (instruction.Operand is not MemberReference methodReference)
         {
@@ -106,7 +108,7 @@ public partial class ModuleWeaver
         throw new WeavingException($"Unsupported method '{methodReference.FullName}'.");
     }
 
-    Resource FindResource(MethodDefinition method, Instruction instruction, string relativePath)
+    Resource? FindResource(MethodDefinition method, Instruction instruction, string? relativePath)
     {
         var stringInstruction = instruction.Previous;
         if (stringInstruction.OpCode != OpCodes.Ldstr)

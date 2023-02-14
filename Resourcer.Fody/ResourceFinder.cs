@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#nullable enable
+using System.IO;
 using System.Linq;
 using System.Text;
 using Fody;
@@ -7,7 +8,7 @@ using Mono.Cecil.Cil;
 
 public partial class ModuleWeaver
 {
-    public Resource FindResource(string searchPath, string @namespace, string codeDirPath, Instruction instruction, MethodDefinition method)
+    public Resource? FindResource(string searchPath, string @namespace, string? codeDirPath, Instruction instruction, MethodDefinition method)
     {
         var resources = ModuleDefinition.Resources;
 
@@ -32,10 +33,11 @@ public partial class ModuleWeaver
         {
             throw new WeavingException($"Could not find a relative path for `{method.FullName}`. Note that Resourcer requires debugs symbols to be enabled to derive paths.");
         }
+
         //Relative based on dir
         var combine = Path.Combine(codeDirPath, searchPath);
         var dirCombine = Path.GetFullPath(combine)
-            .Replace(Directory.GetCurrentDirectory(),"");
+            .Replace(Directory.GetCurrentDirectory(), "");
 
         var suffix = dirCombine
             .TrimStart(Path.DirectorySeparatorChar)
@@ -61,6 +63,7 @@ public partial class ModuleWeaver
         {
             message.AppendLine($"  * {item.Name}");
         }
+
         WriteError(message.ToString(), instruction.GetPreviousSequencePoint(method));
         return null;
     }
