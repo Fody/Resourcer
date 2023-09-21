@@ -5,6 +5,8 @@
 
 Simplifies reading embedded resources from an Assembly.
 
+**See [Milestones](../../milestones?state=closed) for release notes.**
+
 Static resource names are checked at compile time. Use `Resource.AsString` and `Resource.AsStream`.
 
 Runtime resource names are not check but can still make use of the helper code. Use `Resource.AsStringUnChecked` and `Resource.AsStreamUnChecked`.
