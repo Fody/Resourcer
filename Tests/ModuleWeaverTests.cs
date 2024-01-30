@@ -11,12 +11,12 @@ public class ModuleWeaverTests
 
     static ModuleWeaverTests()
     {
-        var weavingTask = new ModuleWeaver
+        var weaver = new ModuleWeaver
         {
             ProjectDirectoryPath = Path.GetFullPath(@"..\..\..\..\AssemblyToProcess\")
         };
 
-        testResult = weavingTask.ExecuteTestRun(
+        testResult = weaver.ExecuteTestRun(
             assemblyPath: "AssemblyToProcess.dll");
     }
 
