@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using Fody;
-using Xunit;
+using TestResult = Fody.TestResult;
+using TestAttribute = TUnit.Core.TestAttribute;
+using TUnit.Assertions;
+using TUnit.Assertions.Extensions;
 
 // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
@@ -20,128 +23,128 @@ public class ModuleWeaverTests
             assemblyPath: "AssemblyToProcess.dll");
     }
 
-    [Fact]
-    public void AsStream()
+    [Test]
+    public async Task AsStream()
     {
         var instance = testResult.GetInstance("TargetClass");
         using (var stream = (Stream)instance.WithAsStream())
         {
-            Assert.NotNull(stream);
+            await Assert.That(stream).IsNotNull();
             using (var streamReader = new StreamReader(stream))
             {
-                Assert.Equal("contents", streamReader.ReadToEnd());
+                await Assert.That(streamReader.ReadToEnd()).IsEqualTo("contents");
             }
         }
     }
 
-    [Fact]
-    public void AsStreamUnChecked()
+    [Test]
+    public async Task AsStreamUnChecked()
     {
         var instance = testResult.GetInstance("TargetClass");
         using (var stream = (Stream)instance.WithAsStreamUnChecked("fakePath"))
         {
-            Assert.Null(stream);
+            await Assert.That(stream).IsNull();
         }
     }
 
-    [Fact]
-    public void AsStreamReader()
+    [Test]
+    public async Task AsStreamReader()
     {
         var instance = testResult.GetInstance("TargetClass");
         using (var streamReader = (StreamReader)instance.WithAsStreamReader())
         {
-            Assert.NotNull(streamReader);
-            Assert.Equal("contents", streamReader.ReadToEnd());
+            await Assert.That(streamReader).IsNotNull();
+            await Assert.That(streamReader.ReadToEnd()).IsEqualTo("contents");
         }
     }
 
-    [Fact]
-    public void AsStreamReaderUnChecked()
+    [Test]
+    public async Task AsStreamReaderUnChecked()
     {
         var instance = testResult.GetInstance("TargetClass");
         using (var streamReader = (StreamReader)instance.WithAsStreamReaderUnChecked("fakePath"))
         {
-            Assert.Null(streamReader);
+            await Assert.That(streamReader).IsNull();
         }
     }
 
-    [Fact]
-    public void AsString()
+    [Test]
+    public async Task AsString()
     {
         var instance = testResult.GetInstance("TargetClass");
         var result = (string)instance.WithAsString();
-        Assert.NotNull(result);
-        Assert.Equal("contents", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("contents");
     }
 
-    [Fact]
-    public void FullyQualified()
+    [Test]
+    public async Task FullyQualified()
     {
         var instance = testResult.GetInstance("TargetClass");
         var result = (string)instance.FullyQualified();
-        Assert.NotNull(result);
-        Assert.Equal("contents", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("contents");
     }
 
-    [Fact]
-    public void AsStringCustomNamespace()
+    [Test]
+    public async Task AsStringCustomNamespace()
     {
         var instance = testResult.GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
         var result = (string)instance.WithAsString();
-        Assert.NotNull(result);
-        Assert.Equal("contents in namespace", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("contents in namespace");
     }
 
-    [Fact]
-    public void AsStringInLinkProject()
+    [Test]
+    public async Task AsStringInLinkProject()
     {
         var instance = testResult.GetInstance("TargetClassInLinkProject");
         var result = (string)instance.WithAsString();
-        Assert.NotNull(result);
-        Assert.Equal("content in link project", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("content in link project");
     }
 
-    [Fact]
-    public void FullyQualifiedCustomNamespace()
+    [Test]
+    public async Task FullyQualifiedCustomNamespace()
     {
         var instance = testResult.GetInstance("AssemblyToProcess.CustomNamespace.TargetClass");
         var result = (string)instance.FullyQualified();
-        Assert.NotNull(result);
-        Assert.Equal("contents in namespace", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("contents in namespace");
     }
 
 
-    [Fact]
-    public void FullyQualifiedMisMatchNamespace()
+    [Test]
+    public async Task FullyQualifiedMisMatchNamespace()
     {
         var instance = testResult.GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
         var result = (string)instance.FullyQualified();
-        Assert.NotNull(result);
-        Assert.Equal("contents in mismatch namespace", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("contents in mismatch namespace");
     }
 
-    [Fact]
-    public void MisMatchNamespace()
+    [Test]
+    public async Task MisMatchNamespace()
     {
         var instance = testResult.GetInstance("AssemblyToProcess.DiffNamespace.TargetClass");
         var result = (string)instance.WithAsString();
-        Assert.NotNull(result);
-        Assert.Equal("contents in mismatch namespace", result);
+        await Assert.That(result).IsNotNull();
+        await Assert.That(result).IsEqualTo("contents in mismatch namespace");
     }
 
-    [Fact]
-    public void AsStringUnCheckedGoodPath()
+    [Test]
+    public async Task AsStringUnCheckedGoodPath()
     {
         var instance = testResult.GetInstance("TargetClass");
         var result = (string)instance.WithAsStringUnChecked("AssemblyToProcess.Resource.txt");
-        Assert.Equal("contents", result);
+        await Assert.That(result).IsEqualTo("contents");
     }
 
-    [Fact]
-    public void AsStringUnChecked()
+    [Test]
+    public async Task AsStringUnChecked()
     {
         var instance = testResult.GetInstance("TargetClass");
-        var exception = Assert.Throws<Exception>(() => instance.WithAsStringUnChecked("fakePath"));
-        Assert.Equal("Could not find a resource named 'fakePath'.", exception.Message);
+        var exception = await Assert.That(() => (object) instance.WithAsStringUnChecked("fakePath")).Throws<Exception>();
+        await Assert.That(exception!.Message).IsEqualTo("Could not find a resource named 'fakePath'.");
     }
 }
